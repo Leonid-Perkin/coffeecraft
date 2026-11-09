@@ -305,7 +305,7 @@ export const BrewSection: React.FC<BrewSectionProps> = ({ onLogToJournal }) => {
                 </span>
                 <span className="text-sm font-semibold text-[#fdf8f3]">
                   {isEspresso
-                    ? `${coffeeGrams}г $\\rightarrow$ ${waterGrams}г (1:${ratio.toFixed(1)})`
+                    ? `${coffeeGrams} г → ${waterGrams} г (1:${ratio.toFixed(1)})`
                     : `~${Math.round(waterGrams - coffeeGrams * 2)} мл`}
                 </span>
                 <span className="text-[10px] text-[#8e6e58] block">
