@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --coffee-espresso: #120b07;
+    --coffee-dark-roast: #1a100b;
+    --coffee-medium-roast: #261710;
+    --coffee-light-roast: #382217;
+    --coffee-caramel: #c88344;
+    --coffee-crema: #e5a65d;
+    --coffee-latte-foam: #fbf6ee;
+    --coffee-cream: #eedbc5;
+    --coffee-border: #42291b;
+  }
+
+  body {
+    background-color: #140d09;
+    background-image: 
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(200, 131, 68, 0.15), transparent 70%),
+      radial-gradient(circle at 10% 40%, rgba(138, 83, 50, 0.08), transparent 40%),
+      radial-gradient(circle at 90% 70%, rgba(197, 122, 57, 0.06), transparent 50%),
+      linear-gradient(180deg, #160e0a 0%, #110906 100%);
+    background-attachment: fixed;
+    color: #ede2d3;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+}
+
+/* Custom Artisan Scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #150d09;
+}
+::-webkit-scrollbar-thumb {
+  background: #5a3723;
+  border-radius: 4px;
+  border: 1px solid #362014;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #c88344;
+}
+
+/* Smooth fade-in animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Specialty Coffee Card glow */
+.coffee-card {
+  background: linear-gradient(180deg, rgba(42, 26, 18, 0.85) 0%, rgba(27, 16, 11, 0.92) 100%);
+  border: 1px solid rgba(89, 54, 34, 0.65);
+  box-shadow: 0 4px 20px -2px rgba(10, 5, 3, 0.5);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.coffee-card:hover {
+  border-color: rgba(200, 131, 68, 0.5);
+  box-shadow: 0 8px 30px -4px rgba(200, 131, 68, 0.12);
+}
+
+.coffee-card-active {
+  background: linear-gradient(180deg, rgba(62, 38, 25, 0.95) 0%, rgba(35, 21, 14, 0.98) 100%);
+  border: 1px solid #d48b46;
+  box-shadow: 0 0 25px -4px rgba(212, 139, 70, 0.25);
+}
+
+/* Warm Crema button */
+.btn-crema {
+  background: linear-gradient(135deg, #d48b46 0%, #b86e2e 50%, #9c551c 100%);
+  color: #140d09;
+  font-weight: 700;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 15px -1px rgba(200, 131, 68, 0.3);
+  transition: all 0.2s ease;
+}
+
+.btn-crema:hover {
+  background: linear-gradient(135deg, #e29d58 0%, #c97e3a 50%, #ad6225 100%);
+  box-shadow: 0 6px 20px 0 rgba(200, 131, 68, 0.45);
+  transform: translateY(-1px);
+}
+
+/* Custom coffee input style */
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+  background-color: #180f0a !important;
+  border-color: #3f2719 !important;
+  color: #f7ede1 !important;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+select:focus,
+textarea:focus {
+  border-color: #d48b46 !important;
+  box-shadow: 0 0 0 1px #d48b46, 0 0 10px rgba(212, 139, 70, 0.25) !important;
+  outline: none !important;
+}
