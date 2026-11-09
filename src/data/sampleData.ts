@@ -48,6 +48,70 @@ export const INITIAL_BEANS: Bean[] = [
     userRating: 4.8,
     notes: 'Хрестоматийная кенийская смородина с сочной винной кислотностью и карамельным финишем.',
     createdAt: Date.now() - 86400000 * 9
+  },
+  {
+    id: 'bean-4',
+    name: 'Panama Geisha Hacienda La Esmeralda',
+    roaster: 'Кооператив Черный',
+    originCountry: 'Панама',
+    region: 'Бокете, вулкан Бару',
+    altitudeMeters: '1650 - 1800 м',
+    variety: 'Geisha (Гейша)',
+    processing: 'Натуральный (Natural)',
+    roastLevel: 'Светлая (Фильтр)',
+    roastDate: '2026-11-04',
+    descriptors: ['Жасмин', 'Бергамот', 'Мандарин', 'Папайя'],
+    userRating: 5,
+    notes: 'Икона мирового спешелти. Кристальная чистота, чайное шелковистое тело и бесконечный жасминовый шлейф.',
+    createdAt: Date.now() - 86400000 * 3
+  },
+  {
+    id: 'bean-5',
+    name: 'Costa Rica Canet Musician Mozart',
+    roaster: 'Bravos Coffee',
+    originCountry: 'Коста-Рика',
+    region: 'Тарразу, поместье Канет',
+    altitudeMeters: '1900 м',
+    variety: 'Катуаи (Catuai)',
+    processing: 'Хани (Honey)',
+    roastLevel: 'Светлая (Фильтр)',
+    roastDate: '2026-10-30',
+    descriptors: ['Клубника', 'Красное сухое вино', 'Ваниль', 'Роза'],
+    userRating: 5,
+    notes: 'Серия «Музыканты». Ферментация Raisin Honey дарит глубокий земляничный и винный букет.',
+    createdAt: Date.now() - 86400000 * 8
+  },
+  {
+    id: 'bean-6',
+    name: 'Indonesia Sumatra Mandheling',
+    roaster: 'Torrefacto',
+    originCountry: 'Индонезия',
+    region: 'Суматра, озеро Тоба',
+    altitudeMeters: '1500 м',
+    variety: 'Типика, Атенг',
+    processing: 'Экспериментальный',
+    roastLevel: 'Средняя (Омни)',
+    roastDate: '2026-10-20',
+    descriptors: ['Тёмный шоколад', 'Кардамон', 'Грейпфрут', 'Кедр'],
+    userRating: 4.8,
+    notes: 'Традиционная суматранская обработка вет-халл (Giling Basah). Плотное тело, пряности и кедровый орех.',
+    createdAt: Date.now() - 86400000 * 12
+  },
+  {
+    id: 'bean-7',
+    name: 'Brazil Fazenda Da Lagoa Yellow Bourbon',
+    roaster: 'Tasty Coffee',
+    originCountry: 'Бразилия',
+    region: 'Минас-Жерайс, Суль-де-Минас',
+    altitudeMeters: '1100 м',
+    variety: 'Желтый Бурбон (Yellow Bourbon)',
+    processing: 'Натуральный (Natural)',
+    roastLevel: 'Темная (Эспрессо)',
+    roastDate: '2026-10-26',
+    descriptors: ['Жареный фундук', 'Молочный шоколад', 'Карамель', 'Тростниковый сахар'],
+    userRating: 4.9,
+    notes: 'Идеальная база под эспрессо и капучино. Густая ореховая крема, сладкая карамель без едкой кислоты.',
+    createdAt: Date.now() - 86400000 * 14
   }
 ];
 
@@ -99,5 +163,29 @@ export const INITIAL_TASTINGS: TastingEntry[] = [
     },
     descriptors: ['Манго', 'Маракуйя', 'Липовый мёд'],
     verdictNotes: 'Тропическая бомба. Никакой терпкости или сухости, тело очень сливочное.'
+  },
+  {
+    id: 'tasting-3',
+    beanId: 'bean-7',
+    beanName: 'Brazil Fazenda Da Lagoa Yellow Bourbon',
+    roaster: 'Tasty Coffee',
+    date: '2026-11-09',
+    methodName: 'Рожковая кофемашина (Эспрессо)',
+    coffeeGrams: 18,
+    waterGrams: 36,
+    grindSize: '10 кликов Comandante',
+    waterTempC: 92,
+    brewTimeSeconds: 27,
+    rating: 5,
+    flavorProfile: {
+      acidity: 4,
+      sweetness: 9,
+      bitterness: 4,
+      body: 10,
+      aftertaste: 9,
+      clarity: 7
+    },
+    descriptors: ['Жареный фундук', 'Молочный шоколад', 'Карамель'],
+    verdictNotes: 'Классический плотный эспрессо. Плотная тигровая крема, сладкий орехово-шоколадный финиш.'
   }
 ];

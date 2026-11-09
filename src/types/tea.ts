@@ -72,6 +72,13 @@ export interface TeaTastingEntry {
   verdictNotes: string;
 }
 
+export interface TeaFamousVariety {
+  name: string;
+  zh: string;
+  region: string;
+  flavorNotes: string;
+}
+
 export interface TeaCategoryInfo {
   id: TeaCategory;
   nameRu: string;
@@ -81,7 +88,7 @@ export interface TeaCategoryInfo {
   recommendedTempC: string;
   steepTime: string;
   description: string;
-  famousTeas: string[];
+  famousTeas: TeaFamousVariety[];
   vessels: string;
   accentColor: string;
   borderColor: string;

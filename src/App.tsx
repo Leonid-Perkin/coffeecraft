@@ -32,7 +32,11 @@ export const App: React.FC = () => {
   const [beans, setBeans] = useState<Bean[]>(() => {
     try {
       const saved = localStorage.getItem('coffeecraft_beans');
-      return saved ? JSON.parse(saved) : INITIAL_BEANS;
+      if (!saved) return INITIAL_BEANS;
+      const parsed: Bean[] = JSON.parse(saved);
+      const existingIds = new Set(parsed.map((b) => b.id));
+      const missingInitial = INITIAL_BEANS.filter((b) => !existingIds.has(b.id));
+      return [...parsed, ...missingInitial];
     } catch {
       return INITIAL_BEANS;
     }
@@ -52,7 +56,11 @@ export const App: React.FC = () => {
   const [teas, setTeas] = useState<TeaItem[]>(() => {
     try {
       const saved = localStorage.getItem('teacraft_teas');
-      return saved ? JSON.parse(saved) : INITIAL_TEAS;
+      if (!saved) return INITIAL_TEAS;
+      const parsed: TeaItem[] = JSON.parse(saved);
+      const existingIds = new Set(parsed.map((t) => t.id));
+      const missingInitial = INITIAL_TEAS.filter((t) => !existingIds.has(t.id));
+      return [...parsed, ...missingInitial];
     } catch {
       return INITIAL_TEAS;
     }

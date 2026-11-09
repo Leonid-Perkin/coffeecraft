@@ -88,14 +88,25 @@ export const TeaEncyclopediaSection: React.FC = () => {
               <Sparkles className="w-4 h-4 text-emerald-400" />
               Знаменитые сорта этой категории:
             </span>
-            <div className="space-y-2">
+            <div className="space-y-2.5">
               {activeCategory.famousTeas.map((tea, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center gap-2.5 p-2.5 rounded-xl bg-[#142419] border border-[#203827] text-xs sm:text-sm text-[#e2eee4]"
+                  className="p-3 rounded-xl bg-[#142419] border border-[#203827] text-xs transition-all hover:border-emerald-500/50"
                 >
-                  <div className="w-2 h-2 rounded-full bg-emerald-400" />
-                  <span>{tea}</span>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-bold text-sm text-[#f2f7f0] flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
+                      {tea.name}
+                      <span className="text-emerald-400 font-serif text-xs opacity-90">{tea.zh}</span>
+                    </span>
+                    <span className="text-[10px] text-emerald-300 bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 rounded-full">
+                      {tea.region}
+                    </span>
+                  </div>
+                  <p className="text-[#a0c4ab] text-[11px] leading-relaxed pl-4">
+                    {tea.flavorNotes}
+                  </p>
                 </div>
               ))}
             </div>
