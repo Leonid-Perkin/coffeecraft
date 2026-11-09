@@ -1,4 +1,5 @@
 export type BrewMethodId =
+  | 'espresso-machine'
   | 'v60-hoffmann'
   | 'v60-kasuya'
   | 'aeropress-inverted'

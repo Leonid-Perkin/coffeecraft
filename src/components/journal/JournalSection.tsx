@@ -15,7 +15,8 @@ import {
   X,
   Coffee,
   Trash2,
-  FileText
+  FileText,
+  Save
 } from 'lucide-react';
 
 interface JournalSectionProps {
@@ -309,6 +310,10 @@ export const JournalSection: React.FC<JournalSectionProps> = ({
         </div>
 
         <div className="flex items-center gap-2 self-end sm:self-auto text-xs">
+          <div className="hidden lg:flex items-center gap-1.5 text-[11px] text-[#caa890] bg-[#140c08] px-2.5 py-1.5 rounded-lg border border-[#342014]">
+            <Save className="w-3.5 h-3.5 text-[#d48b46]" />
+            <span>Дневник в LocalStorage</span>
+          </div>
           <button
             onClick={handleExportData}
             className="flex items-center gap-1.5 px-3 py-1.5 bg-[#251710] hover:bg-[#321f15] text-[#d8c0b0] rounded-lg border border-[#442a1b] transition-colors cursor-pointer"

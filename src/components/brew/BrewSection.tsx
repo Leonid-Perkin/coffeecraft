@@ -25,11 +25,12 @@ interface BrewSectionProps {
 }
 
 export const BrewSection: React.FC<BrewSectionProps> = ({ onLogToJournal }) => {
-  const [selectedMethodId, setSelectedMethodId] = useState<BrewMethodId>('v60-kasuya');
+  const [selectedMethodId, setSelectedMethodId] = useState<BrewMethodId>('espresso-machine');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [activeTimerMethod, setActiveTimerMethod] = useState<BrewMethod | null>(null);
 
   const selectedMethod = BREW_METHODS.find((m) => m.id === selectedMethodId) || BREW_METHODS[0];
+  const isEspresso = selectedMethod.id === 'espresso-machine';
 
   // Ratio and dosing state
   const [coffeeGrams, setCoffeeGrams] = useState<number>(selectedMethod.defaultCoffeeGrams);
@@ -62,9 +63,9 @@ export const BrewSection: React.FC<BrewSectionProps> = ({ onLogToJournal }) => {
       <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
         {[
           { id: 'all', label: 'Все методы' },
+          { id: 'pressure', label: 'Рожок и Гейзер (Давление)' },
           { id: 'pourover', label: 'Воронка (Пуровер)' },
           { id: 'immersion', label: 'Иммерсия (AeroPress / Френч-пресс)' },
-          { id: 'pressure', label: 'Гейзер (Moka Pot)' },
           { id: 'other', label: 'Турка и Cold Brew' },
         ].map((tab) => (
           <button
@@ -82,7 +83,7 @@ export const BrewSection: React.FC<BrewSectionProps> = ({ onLogToJournal }) => {
       </div>
 
       {/* Methods Carousel / Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
         {filteredMethods.map((m) => {
           const isSelected = m.id === selectedMethodId;
           return (
@@ -114,7 +115,7 @@ export const BrewSection: React.FC<BrewSectionProps> = ({ onLogToJournal }) => {
                   </div>
                 </div>
 
-                <h3 className="font-bold text-sm sm:text-base text-[#fdf8f3] mb-1 leading-snug">
+                <h3 className="font-bold text-sm sm:text-base text-[#fdf8f3] mb-1 leading-snug font-serif">
                   {m.name}
                 </h3>
                 <p className="text-xs text-[#b8957c] line-clamp-2 leading-relaxed">
@@ -141,7 +142,7 @@ export const BrewSection: React.FC<BrewSectionProps> = ({ onLogToJournal }) => {
           <div>
             <div className="flex items-center gap-2 mb-1.5">
               <span className="text-[11px] uppercase tracking-wider font-bold text-[#f5be7e] bg-[#d48b46]/15 border border-[#d48b46]/30 px-2.5 py-0.5 rounded-md">
-                Рецепт и пропорции
+                Рецепт и экстракция
               </span>
               <span className="text-xs text-[#9c7860]">• {selectedMethod.difficulty} уровень</span>
             </div>
@@ -158,7 +159,7 @@ export const BrewSection: React.FC<BrewSectionProps> = ({ onLogToJournal }) => {
             className="w-full lg:w-auto px-7 py-4 btn-crema border border-[#f3be7a]/60 text-[#140d09] font-extrabold text-base rounded-xl flex items-center justify-center gap-2.5 transition-all cursor-pointer"
           >
             <Play className="w-5 h-5 fill-current" />
-            Запустить интерактивный таймер
+            Запустить таймер экстракции
           </button>
         </div>
 
@@ -168,7 +169,9 @@ export const BrewSection: React.FC<BrewSectionProps> = ({ onLogToJournal }) => {
           <div className="lg:col-span-7 space-y-6">
             <div className="flex items-center gap-2 text-sm font-semibold text-[#f5be7e]">
               <Sliders className="w-4 h-4 text-[#d48b46]" />
-              <span>Калькулятор пропорций (Ratio & Water)</span>
+              <span>
+                {isEspresso ? 'Калькулятор дозировки и Brew Ratio (1:2)' : 'Калькулятор пропорций (Ratio & Water)'}
+              </span>
             </div>
 
             {/* Coffee grams slider */}
@@ -176,13 +179,13 @@ export const BrewSection: React.FC<BrewSectionProps> = ({ onLogToJournal }) => {
               <div className="flex justify-between items-center">
                 <label className="text-xs sm:text-sm text-[#d8c0b0] font-medium flex items-center gap-1.5">
                   <Scale className="w-4 h-4 text-[#d48b46]" />
-                  Навеска кофе (сухой вес):
+                  {isEspresso ? 'Навеска в холдер (сухой кофе):' : 'Навеска кофе (сухой вес):'}
                 </label>
                 <div className="flex items-center gap-1">
                   <input
                     type="number"
-                    min="5"
-                    max="100"
+                    min={isEspresso ? 7 : 5}
+                    max={isEspresso ? 24 : 100}
                     step="0.5"
                     value={coffeeGrams}
                     onChange={(e) => setCoffeeGrams(Math.max(5, parseFloat(e.target.value) || 5))}
@@ -194,8 +197,8 @@ export const BrewSection: React.FC<BrewSectionProps> = ({ onLogToJournal }) => {
 
               <input
                 type="range"
-                min="8"
-                max="60"
+                min={isEspresso ? 7 : 8}
+                max={isEspresso ? 24 : 60}
                 step="0.5"
                 value={coffeeGrams}
                 onChange={(e) => setCoffeeGrams(parseFloat(e.target.value))}
@@ -203,10 +206,21 @@ export const BrewSection: React.FC<BrewSectionProps> = ({ onLogToJournal }) => {
               />
 
               <div className="flex justify-between text-[11px] text-[#8e6e58]">
-                <span>8 г (на 1 чашку)</span>
-                <span>15 г (стандарт)</span>
-                <span>30 г (на двоих)</span>
-                <span>60 г (термос)</span>
+                {isEspresso ? (
+                  <>
+                    <span>8 г (одинарный)</span>
+                    <span>14 г (традиционный)</span>
+                    <span>18 г (стандарт спешелти)</span>
+                    <span>21 г (тройной)</span>
+                  </>
+                ) : (
+                  <>
+                    <span>8 г (1 чашка)</span>
+                    <span>15 г (стандарт)</span>
+                    <span>30 г (на двоих)</span>
+                    <span>60 г (термос)</span>
+                  </>
+                )}
               </div>
             </div>
 
@@ -214,7 +228,7 @@ export const BrewSection: React.FC<BrewSectionProps> = ({ onLogToJournal }) => {
             <div className="bg-[#140c08] p-4 rounded-xl border border-[#382215] space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-xs sm:text-sm text-[#d8c0b0] font-medium">
-                  Крепость и пропорция:
+                  {isEspresso ? 'Коэффициент Brew Ratio:' : 'Крепость и пропорция:'}
                 </span>
                 <span className="text-sm font-bold text-[#f5be7e] font-mono">
                   1 : {ratio.toFixed(1)}
@@ -223,32 +237,52 @@ export const BrewSection: React.FC<BrewSectionProps> = ({ onLogToJournal }) => {
 
               {/* Quick ratio presets */}
               <div className="grid grid-cols-4 gap-2">
-                {[
-                  { r: 14, label: '1:14', sub: 'Плотный' },
-                  { r: 15, label: '1:15', sub: 'Насыщенный' },
-                  { r: 16, label: '1:16', sub: 'Золотой стандарт' },
-                  { r: 17, label: '1:17', sub: 'Чайный / Легкий' },
-                ].map((item) => (
-                  <button
-                    key={item.r}
-                    onClick={() => handleRatioPreset(item.r)}
-                    className={`py-2 px-1 text-center rounded-lg border transition-all cursor-pointer ${
-                      Math.abs(ratio - item.r) < 0.2
-                        ? 'bg-[#d48b46]/25 border-[#d48b46] text-[#fdf8f3] font-bold shadow-sm shadow-[#d48b46]/20'
-                        : 'bg-[#1c120c] border-[#382215] text-[#9c7860] hover:border-[#52331f] hover:text-[#ede2d3]'
-                    }`}
-                  >
-                    <div className="text-xs font-bold">{item.label}</div>
-                    <div className="text-[10px] text-[#8e6e58] hidden sm:block">{item.sub}</div>
-                  </button>
-                ))}
+                {isEspresso
+                  ? [
+                      { r: 1.5, label: '1:1.5', sub: 'Ристретто' },
+                      { r: 2.0, label: '1:2.0', sub: 'Стандарт (Нормаль)' },
+                      { r: 2.5, label: '1:2.5', sub: 'Спешелти фильтр' },
+                      { r: 3.0, label: '1:3.0', sub: 'Лунго / Аллонже' },
+                    ].map((item) => (
+                      <button
+                        key={item.r}
+                        onClick={() => handleRatioPreset(item.r)}
+                        className={`py-2 px-1 text-center rounded-lg border transition-all cursor-pointer ${
+                          Math.abs(ratio - item.r) < 0.1
+                            ? 'bg-[#d48b46]/25 border-[#d48b46] text-[#fdf8f3] font-bold shadow-sm shadow-[#d48b46]/20'
+                            : 'bg-[#1c120c] border-[#382215] text-[#9c7860] hover:border-[#52331f] hover:text-[#ede2d3]'
+                        }`}
+                      >
+                        <div className="text-xs font-bold">{item.label}</div>
+                        <div className="text-[10px] text-[#8e6e58] hidden sm:block">{item.sub}</div>
+                      </button>
+                    ))
+                  : [
+                      { r: 14, label: '1:14', sub: 'Плотный' },
+                      { r: 15, label: '1:15', sub: 'Насыщенный' },
+                      { r: 16, label: '1:16', sub: 'Золотой стандарт' },
+                      { r: 17, label: '1:17', sub: 'Чайный / Легкий' },
+                    ].map((item) => (
+                      <button
+                        key={item.r}
+                        onClick={() => handleRatioPreset(item.r)}
+                        className={`py-2 px-1 text-center rounded-lg border transition-all cursor-pointer ${
+                          Math.abs(ratio - item.r) < 0.2
+                            ? 'bg-[#d48b46]/25 border-[#d48b46] text-[#fdf8f3] font-bold shadow-sm shadow-[#d48b46]/20'
+                            : 'bg-[#1c120c] border-[#382215] text-[#9c7860] hover:border-[#52331f] hover:text-[#ede2d3]'
+                        }`}
+                      >
+                        <div className="text-xs font-bold">{item.label}</div>
+                        <div className="text-[10px] text-[#8e6e58] hidden sm:block">{item.sub}</div>
+                      </button>
+                    ))}
               </div>
 
               <input
                 type="range"
-                min="7"
-                max="20"
-                step="0.5"
+                min={isEspresso ? 1.0 : 7}
+                max={isEspresso ? 4.0 : 20}
+                step={isEspresso ? 0.1 : 0.5}
                 value={ratio}
                 onChange={(e) => setRatio(parseFloat(e.target.value))}
                 className="w-full accent-[#d48b46] h-2 bg-[#2a1a11] rounded-lg cursor-pointer"
@@ -259,18 +293,24 @@ export const BrewSection: React.FC<BrewSectionProps> = ({ onLogToJournal }) => {
             <div className="p-4 bg-gradient-to-r from-[#2c1a10] via-[#20130c] to-[#2c1a10] rounded-xl border border-[#d48b46]/40 flex items-center justify-between shadow-inner">
               <div>
                 <span className="text-xs text-[#caa890] uppercase tracking-wide block">
-                  Необходимый объем воды
+                  {isEspresso ? 'Целевой вес выхода на весах' : 'Необходимый объем воды'}
                 </span>
                 <span className="text-2xl sm:text-3xl font-extrabold text-[#f5be7e] font-mono">
                   {waterGrams} <span className="text-base font-normal text-[#caa890]">г (мл)</span>
                 </span>
               </div>
               <div className="text-right">
-                <span className="text-xs text-[#caa890] block">Выход готового напитка:</span>
-                <span className="text-sm font-semibold text-[#fdf8f3]">
-                  ~{Math.round(waterGrams - coffeeGrams * 2)} мл
+                <span className="text-xs text-[#caa890] block">
+                  {isEspresso ? 'Пропорция в чашке:' : 'Выход напитка:'}
                 </span>
-                <span className="text-[10px] text-[#8e6e58] block">(удержание жмыхом 2х)</span>
+                <span className="text-sm font-semibold text-[#fdf8f3]">
+                  {isEspresso
+                    ? `${coffeeGrams}г $\\rightarrow$ ${waterGrams}г (1:${ratio.toFixed(1)})`
+                    : `~${Math.round(waterGrams - coffeeGrams * 2)} мл`}
+                </span>
+                <span className="text-[10px] text-[#8e6e58] block">
+                  {isEspresso ? 'Время пролива: ~26-30 сек' : '(удержание жмыхом 2х)'}
+                </span>
               </div>
             </div>
           </div>
@@ -288,12 +328,12 @@ export const BrewSection: React.FC<BrewSectionProps> = ({ onLogToJournal }) => {
               <div className="bg-[#140c08] p-3.5 rounded-xl border border-[#382215]">
                 <span className="text-xs text-[#caa890] block mb-1 flex items-center gap-1">
                   <Flame className="w-3.5 h-3.5 text-[#d48b46]" />
-                  Температура воды
+                  Температура бойлера/группы
                 </span>
                 <span className="text-sm font-bold text-[#f5be7e]">
                   {selectedMethod.recommendedTempC}°C
                 </span>
-                <span className="text-[10px] text-[#8e6e58] block">для светлой обжарки</span>
+                <span className="text-[10px] text-[#8e6e58] block">давление помпы: 9 бар</span>
               </div>
             </div>
 
@@ -301,7 +341,7 @@ export const BrewSection: React.FC<BrewSectionProps> = ({ onLogToJournal }) => {
             <div className="bg-[#140c08] p-4 rounded-xl border border-[#382215]">
               <div className="text-xs font-semibold text-[#f5be7e] mb-2.5 flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5 text-[#d48b46]" />
-                Этапы заваривания ({selectedMethod.steps.length}):
+                Этапы экстракции ({selectedMethod.steps.length}):
               </div>
 
               <div className="space-y-2">
