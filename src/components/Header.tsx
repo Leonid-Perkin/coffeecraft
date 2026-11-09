@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { Info, X, Sparkles, Heart } from 'lucide-react';
+import { Info, X, Sparkles, Heart, Download } from 'lucide-react';
 import { CyberOwlLogo } from './CyberOwlLogo';
 
 interface HeaderProps {
@@ -10,6 +10,34 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ beansCount, tastingsCount }) => {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [canInstall, setCanInstall] = useState(false);
+
+  useEffect(() => {
+    // Check if already in standalone PWA mode
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      setCanInstall(false);
+      return;
+    }
+
+    const handleBeforeInstall = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setCanInstall(true);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstall);
+    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const choice = await deferredPrompt.userChoice;
+    if (choice?.outcome === 'accepted') {
+      setCanInstall(false);
+    }
+  };
 
   return (
     <>
@@ -45,6 +73,17 @@ export const Header: React.FC<HeaderProps> = ({ beansCount, tastingsCount }) => 
               <span className="text-[#9e7e68]">Оценено:</span>
               <span className="font-bold text-[#f5be7e]">{tastingsCount} чашек</span>
             </div>
+
+            {canInstall && (
+              <button
+                onClick={handleInstallClick}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold btn-crema border border-[#f3be7a]/60 text-[#140d09] shadow-md transition-all cursor-pointer"
+                title="Установить как PWA приложение на телефон или компьютер"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Установить</span>
+              </button>
+            )}
 
             <button
               onClick={() => setIsAboutOpen(true)}
