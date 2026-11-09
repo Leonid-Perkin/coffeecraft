@@ -80,13 +80,13 @@ export const GRINDERS: GrinderModel[] = [
     brand: 'Timemore',
     type: 'hand',
     clicks: {
-      cezve: 'Не рекомендуется (<6 кликов)',
-      espresso: '7 – 9 кликов',
-      aeropress: '10 – 12 кликов',
-      v60: '13 – 16 кликов',
-      chemex: '17 – 19 кликов',
-      frenchPress: '19 – 22 клика',
-      coldBrew: '23 – 26 кликов'
+      cezve: 'Не рекомендуется (<6 кликов — риск трения жерновов)',
+      espresso: '7 – 10 кликов (для стандартной C2/C3)',
+      aeropress: '11 – 14 кликов',
+      v60: '14 – 18 кликов',
+      chemex: '18 – 22 клика',
+      frenchPress: '22 – 26 кликов',
+      coldBrew: '25 – 30 кликов'
     }
   },
   {
@@ -96,12 +96,12 @@ export const GRINDERS: GrinderModel[] = [
     type: 'hand',
     clicks: {
       cezve: '5 – 8 кликов',
-      espresso: '9 – 13 кликов (с Red Clix 18-26)',
-      aeropress: '14 – 18 кликов',
-      v60: '22 – 27 кликов',
-      chemex: '28 – 32 клика',
-      frenchPress: '28 – 33 клика',
-      coldBrew: '34 – 38 кликов'
+      espresso: '8 – 12 кликов (с Red Clix 16–24)',
+      aeropress: '13 – 18 кликов',
+      v60: '19 – 25 кликов',
+      chemex: '26 – 32 клика',
+      frenchPress: '26 – 32 клика',
+      coldBrew: '32 – 38 кликов'
     }
   },
   {
@@ -110,13 +110,13 @@ export const GRINDERS: GrinderModel[] = [
     brand: '1Zpresso',
     type: 'hand',
     clicks: {
-      cezve: '2.5 – 3.0 (25-30 кликов)',
-      espresso: '3.0 – 4.0 (30-40 кликов)',
-      aeropress: '5.0 – 6.5 (50-65 кликов)',
-      v60: '7.0 – 8.5 (70-85 кликов)',
-      chemex: '8.5 – 9.5 (85-95 кликов)',
-      frenchPress: '8.5 – 9.5',
-      coldBrew: '9.5 – 10.0+'
+      cezve: '1.5 – 2.0 (15–20 кликов)',
+      espresso: '2.0 – 2.8 (20–28 кликов)',
+      aeropress: '4.0 – 6.0 (40–60 кликов)',
+      v60: '6.0 – 7.5 (60–75 кликов)',
+      chemex: '7.5 – 8.5 (75–85 кликов)',
+      frenchPress: '8.0 – 9.0 (80–90 кликов)',
+      coldBrew: '9.0 – 10.0+ (90–100+ кликов)'
     }
   },
   {
@@ -126,7 +126,7 @@ export const GRINDERS: GrinderModel[] = [
     type: 'hand',
     clicks: {
       cezve: '25 – 35 кликов',
-      espresso: '35 – 50 кликов',
+      espresso: '35 – 45 кликов',
       aeropress: '60 – 75 кликов',
       v60: '85 – 105 кликов',
       chemex: '105 – 120 кликов',
@@ -140,12 +140,12 @@ export const GRINDERS: GrinderModel[] = [
     brand: 'Fellow',
     type: 'electric',
     clicks: {
-      cezve: 'Не поддерживается',
+      cezve: 'Не поддерживается (только фильтр)',
       espresso: 'Не поддерживается (только фильтр)',
-      aeropress: 'Деление 2 – 3',
-      v60: 'Деление 4 – 5.5',
-      chemex: 'Деление 6 – 7',
-      frenchPress: 'Деление 8 – 9',
+      aeropress: 'Деление 2 – 4',
+      v60: 'Деление 4 – 6',
+      chemex: 'Деление 6 – 8',
+      frenchPress: 'Деление 8 – 9.5',
       coldBrew: 'Деление 10 – 11'
     }
   },
