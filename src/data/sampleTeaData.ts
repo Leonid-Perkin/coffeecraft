@@ -156,6 +156,19 @@ export const INITIAL_TEAS: TeaItem[] = [
     descriptors: ['Сушеная вишня', 'Луговые цветы', 'Карамель', 'Шалфей'],
     notes: 'Более плотный и объемный, чем Серебряные иглы, с богатым фруктово-ягодным букетом.',
     createdAt: Date.now() - 86400000 * 9
+  },
+  {
+    id: 'tea-13',
+    name: 'Дарджилинг «Шампанское чаёв» (Margaret\'s Hope)',
+    chineseName: '大吉岭 / Darjeeling',
+    category: 'Красный (Хун Ча)',
+    province: 'Индия, Западная Бенгалия (Гималаи, 2000 м)',
+    harvestYear: '2025 (Second Flush / Летний сбор)',
+    grade: 'FTGFOP1 (Finest Tippy Golden Flowery Orange Pekoe)',
+    userRating: 5,
+    descriptors: ['Мускат', 'Липовый мёд', 'Луговые цветы', 'Сушеная вишня'],
+    notes: '«Шампанское среди чаёв». Знаменитый плантационный сбор с плантации Margaret\'s Hope со зрелым мускатным букетом (Muscatel), искристой терпкостью и золотисто-янтарным настоем.',
+    createdAt: Date.now() - 86400000 * 2
   }
 ];
 
@@ -228,5 +241,28 @@ export const INITIAL_TEA_TASTINGS: TeaTastingEntry[] = [
     },
     descriptors: ['Липовый мёд', 'Луговые цветы', 'Берёзовый сок'],
     verdictNotes: 'Кристальная чистота. Почки стоят вертикально в воде. Настой сладкий, словно горная талая вода с каплей цветочного нектара.'
+  },
+  {
+    id: 'tea-tasting-4',
+    teaName: 'Дарджилинг «Шампанское чаёв» (Margaret\'s Hope)',
+    category: 'Красный (Хун Ча)',
+    province: 'Индия, Гималаи',
+    date: '2026-11-09',
+    methodName: 'Настаивание в чайнике',
+    leafGrams: 5,
+    waterGrams: 450,
+    waterTempC: 92,
+    steepsCount: 1,
+    rating: 5,
+    flavorProfile: {
+      aroma: 10,
+      huigan: 9,
+      chaqi: 8,
+      body: 8,
+      freshness: 9,
+      astringency: 4
+    },
+    descriptors: ['Мускат', 'Липовый мёд', 'Луговые цветы'],
+    verdictNotes: 'Эталонный Second Flush! Знаменитый мускатный виноградный тон (Muscatel) с легкой благородной танинностью и долгим медовым послевкусием.'
   }
 ];

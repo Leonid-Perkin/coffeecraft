@@ -205,6 +205,12 @@ export const TEA_CATEGORIES_INFO: TeaCategoryInfo[] = [
         zh: '滇红松针',
         region: 'Юньнань',
         flavorNotes: 'Длинные прямые золотые иглы: финики, сладкий изюм, какао'
+      },
+      {
+        name: 'Дарджилинг (Darjeeling FTGFOP1)',
+        zh: '大吉岭 / Darjeeling',
+        region: 'Индия, Западная Бенгалия, предгорья Гималаев',
+        flavorNotes: '«Шампанское чаёв»: сбор Second Flush с непревзойденным мускатным букетом (Muscatel), цветочным мёдом и благородной терпкостью'
       }
     ],
     vessels: 'Глиняный чайник, фарфоровая гайвань, типот',
