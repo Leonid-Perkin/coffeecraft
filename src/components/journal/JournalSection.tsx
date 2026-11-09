@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import type { Bean, TastingEntry } from '../../types';
 import { RadarChart } from './RadarChart';
 import { DescriptorPicker } from './DescriptorPicker';
@@ -526,403 +527,413 @@ export const JournalSection: React.FC<JournalSectionProps> = ({
       )}
 
       {/* Tasting Detail Modal (with Interactive Radar) */}
-      {selectedTastingView && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
-          <div className="bg-[#1b110a] border border-[#52331f] rounded-2xl w-full max-w-lg shadow-2xl p-5 sm:p-6 overflow-hidden my-auto animate-fade-in text-[#ede2d3]">
-            <div className="flex items-center justify-between pb-3 border-b border-[#382215]">
-              <div>
-                <span className="text-xs font-semibold text-[#d48b46]">
-                  {selectedTastingView.date} • {selectedTastingView.methodName}
-                </span>
-                <h3 className="text-xl font-bold text-[#fdf8f3] font-serif">{selectedTastingView.beanName}</h3>
-              </div>
-              <button
-                onClick={() => setSelectedTastingView(null)}
-                className="p-1.5 text-[#9c7860] hover:text-[#fdf8f3] rounded-lg bg-[#251710]"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Radar Diagram */}
-            <div className="py-4 flex justify-center">
-              <RadarChart data={selectedTastingView.flavorProfile} size={280} />
-            </div>
-
-            {/* Brew Parameters Table */}
-            <div className="grid grid-cols-3 gap-2 p-3 bg-[#140c08] rounded-xl border border-[#342014] text-xs mb-3">
-              <div>
-                <span className="text-[#8e6e58] block">Пропорция</span>
-                <span className="font-bold text-[#f5be7e]">
-                  {selectedTastingView.coffeeGrams}г / {selectedTastingView.waterGrams}г
-                </span>
-              </div>
-              <div>
-                <span className="text-[#8e6e58] block">Помол</span>
-                <span className="font-semibold text-[#ede2d3] line-clamp-1">
-                  {selectedTastingView.grindSize}
-                </span>
-              </div>
-              <div>
-                <span className="text-[#8e6e58] block">Время</span>
-                <span className="font-bold text-[#f5be7e]">
-                  {Math.floor(selectedTastingView.brewTimeSeconds / 60)}:
-                  {(selectedTastingView.brewTimeSeconds % 60).toString().padStart(2, '0')}
-                </span>
-              </div>
-            </div>
-
-            {/* Descriptors */}
-            {selectedTastingView.descriptors.length > 0 && (
-              <div className="mb-3">
-                <span className="text-xs text-[#caa890] block mb-1">Дескрипторы вкуса:</span>
-                <div className="flex flex-wrap gap-1.5">
-                  {selectedTastingView.descriptors.map((d) => (
-                    <span
-                      key={d}
-                      className="text-xs px-2.5 py-1 rounded-full bg-[#362114] text-[#f5be7e] border border-[#52331f]"
-                    >
-                      {d}
-                    </span>
-                  ))}
+      {selectedTastingView &&
+        createPortal(
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
+            <div className="bg-[#1b110a] border border-[#52331f] rounded-2xl w-full max-w-lg shadow-2xl p-5 sm:p-6 my-auto animate-fade-in text-[#ede2d3] max-h-[92vh] flex flex-col">
+              <div className="flex items-center justify-between pb-3 border-b border-[#382215] shrink-0">
+                <div>
+                  <span className="text-xs font-semibold text-[#d48b46]">
+                    {selectedTastingView.date} • {selectedTastingView.methodName}
+                  </span>
+                  <h3 className="text-xl font-bold text-[#fdf8f3] font-serif">{selectedTastingView.beanName}</h3>
                 </div>
+                <button
+                  onClick={() => setSelectedTastingView(null)}
+                  className="p-1.5 text-[#9c7860] hover:text-[#fdf8f3] rounded-lg bg-[#251710] cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
               </div>
-            )}
 
-            {/* Verdict Note */}
-            {selectedTastingView.verdictNotes && (
-              <div className="p-3 bg-[#24150d] rounded-xl border border-[#482d1c] text-xs text-[#d8c0b0] mb-4">
-                <span className="font-semibold text-[#f5be7e] block mb-0.5">Впечатления и заметки:</span>
-                «{selectedTastingView.verdictNotes}»
+              <div className="overflow-y-auto flex-1 min-h-0 pr-1 py-2 space-y-4">
+                {/* Radar Diagram */}
+                <div className="py-2 flex justify-center">
+                  <RadarChart data={selectedTastingView.flavorProfile} size={260} />
+                </div>
+
+                {/* Brew Parameters Table */}
+                <div className="grid grid-cols-3 gap-2 p-3 bg-[#140c08] rounded-xl border border-[#342014] text-xs">
+                  <div>
+                    <span className="text-[#8e6e58] block">Пропорция</span>
+                    <span className="font-bold text-[#f5be7e]">
+                      {selectedTastingView.coffeeGrams}г / {selectedTastingView.waterGrams}г
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-[#8e6e58] block">Помол</span>
+                    <span className="font-semibold text-[#ede2d3] line-clamp-1">
+                      {selectedTastingView.grindSize}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-[#8e6e58] block">Время</span>
+                    <span className="font-bold text-[#f5be7e]">
+                      {Math.floor(selectedTastingView.brewTimeSeconds / 60)}:
+                      {(selectedTastingView.brewTimeSeconds % 60).toString().padStart(2, '0')}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Descriptors */}
+                {selectedTastingView.descriptors.length > 0 && (
+                  <div>
+                    <span className="text-xs text-[#caa890] block mb-1.5">Дескрипторы вкуса:</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {selectedTastingView.descriptors.map((d) => (
+                        <span
+                          key={d}
+                          className="text-xs px-2.5 py-1 rounded-full bg-[#362114] text-[#f5be7e] border border-[#52331f]"
+                        >
+                          {d}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Verdict Note */}
+                {selectedTastingView.verdictNotes && (
+                  <div className="p-3 bg-[#24150d] rounded-xl border border-[#482d1c] text-xs text-[#d8c0b0]">
+                    <span className="font-semibold text-[#f5be7e] block mb-0.5">Впечатления и заметки:</span>
+                    «{selectedTastingView.verdictNotes}»
+                  </div>
+                )}
               </div>
-            )}
 
-            <button
-              onClick={() => setSelectedTastingView(null)}
-              className="w-full py-2.5 bg-[#251710] hover:bg-[#342016] text-[#ede2d3] rounded-xl text-sm font-semibold border border-[#3e2618] transition-colors cursor-pointer"
-            >
-              Закрыть
-            </button>
-          </div>
-        </div>
-      )}
+              <div className="pt-3 border-t border-[#382215] shrink-0">
+                <button
+                  onClick={() => setSelectedTastingView(null)}
+                  className="w-full py-2.5 bg-[#251710] hover:bg-[#342016] text-[#ede2d3] rounded-xl text-sm font-semibold border border-[#3e2618] transition-colors cursor-pointer"
+                >
+                  Закрыть
+                </button>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
 
       {/* Add New Bean Modal */}
-      {isAddBeanModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
-          <div className="bg-[#1b110a] border border-[#52331f] rounded-2xl w-full max-w-lg shadow-2xl p-5 sm:p-6 overflow-hidden my-auto max-h-[90vh] flex flex-col text-[#ede2d3]">
-            <div className="flex items-center justify-between pb-3 border-b border-[#382215]">
-              <h3 className="text-lg font-bold text-[#fdf8f3] font-serif flex items-center gap-2">
-                <Coffee className="w-5 h-5 text-[#d48b46]" />
-                Добавить сорт кофе
-              </h3>
-              <button
-                onClick={() => setIsAddBeanModalOpen(false)}
-                className="p-1 text-[#9c7860] hover:text-[#fdf8f3]"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <form onSubmit={handleSaveBean} className="space-y-4 overflow-y-auto pr-1 py-3 text-xs sm:text-sm">
-              <div>
-                <label className="block text-[#d8c0b0] font-medium mb-1">Название сорта / лота *</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="напр. Ethiopia Yirgacheffe Chelchele"
-                  value={newBean.name}
-                  onChange={(e) => setNewBean({ ...newBean, name: e.target.value })}
-                  className="w-full rounded-xl px-3 py-2 text-[#fdf8f3] border"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-[#d8c0b0] font-medium mb-1">Обжарщик</label>
-                  <input
-                    type="text"
-                    placeholder="Tasty Coffee, Submarine..."
-                    value={newBean.roaster}
-                    onChange={(e) => setNewBean({ ...newBean, roaster: e.target.value })}
-                    className="w-full rounded-xl px-3 py-2 text-[#fdf8f3] border"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[#d8c0b0] font-medium mb-1">Страна происхождения</label>
-                  <input
-                    type="text"
-                    placeholder="Эфиопия, Колумбия, Кения..."
-                    value={newBean.originCountry}
-                    onChange={(e) => setNewBean({ ...newBean, originCountry: e.target.value })}
-                    className="w-full rounded-xl px-3 py-2 text-[#fdf8f3] border"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-[#d8c0b0] font-medium mb-1">Метод обработки</label>
-                  <select
-                    value={newBean.processing}
-                    onChange={(e) => setNewBean({ ...newBean, processing: e.target.value as Bean['processing'] })}
-                    className="w-full rounded-xl px-3 py-2 border"
-                  >
-                    <option value="Мытый (Washed)">Мытый (Washed)</option>
-                    <option value="Натуральный (Natural)">Натуральный (Natural)</option>
-                    <option value="Анаэробный (Anaerobic)">Анаэробный (Anaerobic)</option>
-                    <option value="Хани (Honey)">Хани (Honey)</option>
-                    <option value="Экспериментальный">Экспериментальный</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-[#d8c0b0] font-medium mb-1">Степень обжарки</label>
-                  <select
-                    value={newBean.roastLevel}
-                    onChange={(e) => setNewBean({ ...newBean, roastLevel: e.target.value as Bean['roastLevel'] })}
-                    className="w-full rounded-xl px-3 py-2 border"
-                  >
-                    <option value="Светлая (Фильтр)">Светлая (Фильтр)</option>
-                    <option value="Средне-светлая">Средне-светлая</option>
-                    <option value="Средняя (Омни)">Средняя (Омни)</option>
-                    <option value="Темная (Эспрессо)">Темная (Эспрессо)</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-[#d8c0b0] font-medium mb-1">Высота произрастания</label>
-                  <input
-                    type="text"
-                    placeholder="1900 - 2100 м"
-                    value={newBean.altitudeMeters}
-                    onChange={(e) => setNewBean({ ...newBean, altitudeMeters: e.target.value })}
-                    className="w-full rounded-xl px-3 py-2 text-[#fdf8f3] border"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[#d8c0b0] font-medium mb-1">Дата обжарки</label>
-                  <input
-                    type="date"
-                    value={newBean.roastDate}
-                    onChange={(e) => setNewBean({ ...newBean, roastDate: e.target.value })}
-                    className="w-full rounded-xl px-3 py-2 border"
-                  />
-                </div>
-              </div>
-
-              {/* Flavor Wheel Descriptor Picker */}
-              <DescriptorPicker
-                selected={newBean.descriptors || []}
-                onChange={(tags) => setNewBean({ ...newBean, descriptors: tags })}
-              />
-
-              <div>
-                <label className="block text-[#d8c0b0] font-medium mb-1">Заметки и описание лота</label>
-                <textarea
-                  rows={2}
-                  placeholder="Особенности вкуса, ферментации, терруара..."
-                  value={newBean.notes}
-                  onChange={(e) => setNewBean({ ...newBean, notes: e.target.value })}
-                  className="w-full rounded-xl px-3 py-2 border"
-                />
-              </div>
-
-              <div className="pt-2 flex justify-end gap-2">
+      {isAddBeanModalOpen &&
+        createPortal(
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
+            <div className="bg-[#1b110a] border border-[#52331f] rounded-2xl w-full max-w-lg shadow-2xl p-5 sm:p-6 my-auto max-h-[92vh] flex flex-col text-[#ede2d3]">
+              <div className="flex items-center justify-between pb-3 border-b border-[#382215] shrink-0">
+                <h3 className="text-lg font-bold text-[#fdf8f3] font-serif flex items-center gap-2">
+                  <Coffee className="w-5 h-5 text-[#d48b46]" />
+                  Добавить сорт кофе
+                </h3>
                 <button
-                  type="button"
                   onClick={() => setIsAddBeanModalOpen(false)}
-                  className="px-4 py-2 bg-[#251710] hover:bg-[#321f15] text-[#caa890] rounded-xl border border-[#3e2618]"
+                  className="p-1 text-[#9c7860] hover:text-[#fdf8f3] cursor-pointer"
                 >
-                  Отмена
-                </button>
-                <button
-                  type="submit"
-                  className="px-6 py-2 btn-crema border border-[#f3be7a]/60 text-[#140d09] font-bold rounded-xl"
-                >
-                  Сохранить сорт
+                  <X className="w-5 h-5" />
                 </button>
               </div>
-            </form>
-          </div>
-        </div>
-      )}
 
-      {/* Add New Tasting Modal */}
-      {isAddTastingModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
-          <div className="bg-[#1b110a] border border-[#52331f] rounded-2xl w-full max-w-2xl shadow-2xl p-5 sm:p-6 overflow-hidden my-auto max-h-[92vh] flex flex-col text-[#ede2d3]">
-            <div className="flex items-center justify-between pb-3 border-b border-[#382215]">
-              <h3 className="text-lg font-bold text-[#fdf8f3] font-serif flex items-center gap-2">
-                <FileText className="w-5 h-5 text-[#d48b46]" />
-                Новая дегустация кофе
-              </h3>
-              <button
-                onClick={() => setIsAddTastingModalOpen(false)}
-                className="p-1 text-[#9c7860] hover:text-[#fdf8f3]"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <form onSubmit={handleSaveTasting} className="space-y-4 overflow-y-auto pr-1 py-3 text-xs sm:text-sm">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <form onSubmit={handleSaveBean} className="space-y-4 overflow-y-auto flex-1 min-h-0 pr-1.5 py-3 text-xs sm:text-sm">
                 <div>
-                  <label className="block text-[#d8c0b0] font-medium mb-1">Название зерна *</label>
+                  <label className="block text-[#d8c0b0] font-medium mb-1">Название сорта / лота *</label>
                   <input
                     type="text"
                     required
-                    placeholder="Ethiopia Yirgacheffe..."
-                    value={newTasting.beanName}
-                    onChange={(e) => setNewTasting({ ...newTasting, beanName: e.target.value })}
+                    placeholder="напр. Ethiopia Yirgacheffe Chelchele"
+                    value={newBean.name}
+                    onChange={(e) => setNewBean({ ...newBean, name: e.target.value })}
                     className="w-full rounded-xl px-3 py-2 text-[#fdf8f3] border"
                   />
                 </div>
 
-                <div>
-                  <label className="block text-[#d8c0b0] font-medium mb-1">Способ заваривания</label>
-                  <input
-                    type="text"
-                    placeholder="V60, AeroPress, Chemex..."
-                    value={newTasting.methodName}
-                    onChange={(e) => setNewTasting({ ...newTasting, methodName: e.target.value })}
-                    className="w-full rounded-xl px-3 py-2 text-[#fdf8f3] border"
-                  />
-                </div>
-              </div>
-
-              {/* Brew parameters row */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                <div>
-                  <label className="block text-[#caa890] text-xs mb-1">Кофе (г)</label>
-                  <input
-                    type="number"
-                    step="0.5"
-                    value={newTasting.coffeeGrams}
-                    onChange={(e) => setNewTasting({ ...newTasting, coffeeGrams: parseFloat(e.target.value) || 0 })}
-                    className="w-full rounded-lg px-2.5 py-1.5 border"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[#caa890] text-xs mb-1">Вода (г)</label>
-                  <input
-                    type="number"
-                    value={newTasting.waterGrams}
-                    onChange={(e) => setNewTasting({ ...newTasting, waterGrams: parseInt(e.target.value, 10) || 0 })}
-                    className="w-full rounded-lg px-2.5 py-1.5 border"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[#caa890] text-xs mb-1">Время (сек)</label>
-                  <input
-                    type="number"
-                    value={newTasting.brewTimeSeconds}
-                    onChange={(e) => setNewTasting({ ...newTasting, brewTimeSeconds: parseInt(e.target.value, 10) || 0 })}
-                    className="w-full rounded-lg px-2.5 py-1.5 border"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[#caa890] text-xs mb-1">Помол</label>
-                  <input
-                    type="text"
-                    placeholder="22 клика"
-                    value={newTasting.grindSize}
-                    onChange={(e) => setNewTasting({ ...newTasting, grindSize: e.target.value })}
-                    className="w-full rounded-lg px-2.5 py-1.5 border"
-                  />
-                </div>
-              </div>
-
-              {/* Star rating */}
-              <div className="bg-[#140c08] p-3 rounded-xl border border-[#342014] flex items-center justify-between">
-                <span className="text-[#d8c0b0] font-medium">Общая оценка чашки:</span>
-                <div className="flex items-center gap-1">
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <Star
-                      key={s}
-                      onClick={() => setNewTasting({ ...newTasting, rating: s })}
-                      className={`w-6 h-6 cursor-pointer transition-transform hover:scale-110 ${
-                        s <= (newTasting.rating || 5)
-                          ? 'text-[#f5be7e] fill-[#f5be7e]'
-                          : 'text-[#362114]'
-                      }`}
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[#d8c0b0] font-medium mb-1">Обжарщик</label>
+                    <input
+                      type="text"
+                      placeholder="Tasty Coffee, Submarine..."
+                      value={newBean.roaster}
+                      onChange={(e) => setNewBean({ ...newBean, roaster: e.target.value })}
+                      className="w-full rounded-xl px-3 py-2 text-[#fdf8f3] border"
                     />
-                  ))}
+                  </div>
+                  <div>
+                    <label className="block text-[#d8c0b0] font-medium mb-1">Страна происхождения</label>
+                    <input
+                      type="text"
+                      placeholder="Эфиопия, Колумбия, Кения..."
+                      value={newBean.originCountry}
+                      onChange={(e) => setNewBean({ ...newBean, originCountry: e.target.value })}
+                      className="w-full rounded-xl px-3 py-2 text-[#fdf8f3] border"
+                    />
+                  </div>
                 </div>
-              </div>
 
-              {/* Interactive Radar Sensory Profile */}
-              <div className="bg-[#140c08] p-4 rounded-xl border border-[#482d1c]">
-                <span className="block text-xs uppercase tracking-wider font-bold text-[#f5be7e] mb-2 text-center">
-                  Сенсорный вкусовой радар
-                </span>
-                <RadarChart
-                  data={
-                    newTasting.flavorProfile || {
-                      acidity: 7,
-                      sweetness: 7,
-                      bitterness: 3,
-                      body: 6,
-                      aftertaste: 7,
-                      clarity: 8,
-                    }
-                  }
-                  size={240}
-                  editable={true}
-                  onChange={(key, val) => {
-                    const currentProf = newTasting.flavorProfile || {
-                      acidity: 7,
-                      sweetness: 7,
-                      bitterness: 3,
-                      body: 6,
-                      aftertaste: 7,
-                      clarity: 8,
-                    };
-                    setNewTasting({
-                      ...newTasting,
-                      flavorProfile: { ...currentProf, [key]: val },
-                    });
-                  }}
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[#d8c0b0] font-medium mb-1">Метод обработки</label>
+                    <select
+                      value={newBean.processing}
+                      onChange={(e) => setNewBean({ ...newBean, processing: e.target.value as Bean['processing'] })}
+                      className="w-full rounded-xl px-3 py-2 border"
+                    >
+                      <option value="Мытый (Washed)">Мытый (Washed)</option>
+                      <option value="Натуральный (Natural)">Натуральный (Natural)</option>
+                      <option value="Анаэробный (Anaerobic)">Анаэробный (Anaerobic)</option>
+                      <option value="Хани (Honey)">Хани (Honey)</option>
+                      <option value="Экспериментальный">Экспериментальный</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-[#d8c0b0] font-medium mb-1">Степень обжарки</label>
+                    <select
+                      value={newBean.roastLevel}
+                      onChange={(e) => setNewBean({ ...newBean, roastLevel: e.target.value as Bean['roastLevel'] })}
+                      className="w-full rounded-xl px-3 py-2 border"
+                    >
+                      <option value="Светлая (Фильтр)">Светлая (Фильтр)</option>
+                      <option value="Средне-светлая">Средне-светлая</option>
+                      <option value="Средняя (Омни)">Средняя (Омни)</option>
+                      <option value="Темная (Эспрессо)">Темная (Эспрессо)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[#d8c0b0] font-medium mb-1">Высота произрастания</label>
+                    <input
+                      type="text"
+                      placeholder="1900 - 2100 м"
+                      value={newBean.altitudeMeters}
+                      onChange={(e) => setNewBean({ ...newBean, altitudeMeters: e.target.value })}
+                      className="w-full rounded-xl px-3 py-2 text-[#fdf8f3] border"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[#d8c0b0] font-medium mb-1">Дата обжарки</label>
+                    <input
+                      type="date"
+                      value={newBean.roastDate}
+                      onChange={(e) => setNewBean({ ...newBean, roastDate: e.target.value })}
+                      className="w-full rounded-xl px-3 py-2 border"
+                    />
+                  </div>
+                </div>
+
+                {/* Flavor Wheel Descriptor Picker */}
+                <DescriptorPicker
+                  selected={newBean.descriptors || []}
+                  onChange={(tags) => setNewBean({ ...newBean, descriptors: tags })}
                 />
-              </div>
 
-              {/* Descriptors Picker */}
-              <DescriptorPicker
-                selected={newTasting.descriptors || []}
-                onChange={(tags) => setNewTasting({ ...newTasting, descriptors: tags })}
-              />
+                <div>
+                  <label className="block text-[#d8c0b0] font-medium mb-1">Заметки и описание лота</label>
+                  <textarea
+                    rows={2}
+                    placeholder="Особенности вкуса, ферментации, терруара..."
+                    value={newBean.notes}
+                    onChange={(e) => setNewBean({ ...newBean, notes: e.target.value })}
+                    className="w-full rounded-xl px-3 py-2 border"
+                  />
+                </div>
 
-              <div>
-                <label className="block text-[#d8c0b0] font-medium mb-1">Вердикт и вкусовые заметки</label>
-                <textarea
-                  rows={2}
-                  placeholder="Как менялся вкус по мере остывания чашки, баланс сладости и тела..."
-                  value={newTasting.verdictNotes}
-                  onChange={(e) => setNewTasting({ ...newTasting, verdictNotes: e.target.value })}
-                  className="w-full rounded-xl px-3 py-2 border"
-                />
-              </div>
+                <div className="pt-3 border-t border-[#342014] flex justify-end gap-2 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => setIsAddBeanModalOpen(false)}
+                    className="px-4 py-2 bg-[#251710] hover:bg-[#321f15] text-[#caa890] rounded-xl border border-[#3e2618] cursor-pointer"
+                  >
+                    Отмена
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-6 py-2 btn-crema border border-[#f3be7a]/60 text-[#140d09] font-bold rounded-xl cursor-pointer"
+                  >
+                    Сохранить сорт
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>,
+          document.body
+        )}
 
-              <div className="pt-2 flex justify-end gap-2">
+      {/* Add New Tasting Modal */}
+      {isAddTastingModalOpen &&
+        createPortal(
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
+            <div className="bg-[#1b110a] border border-[#52331f] rounded-2xl w-full max-w-2xl shadow-2xl p-5 sm:p-6 my-auto max-h-[92vh] flex flex-col text-[#ede2d3]">
+              <div className="flex items-center justify-between pb-3 border-b border-[#382215] shrink-0">
+                <h3 className="text-lg font-bold text-[#fdf8f3] font-serif flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-[#d48b46]" />
+                  Новая дегустация кофе
+                </h3>
                 <button
-                  type="button"
                   onClick={() => setIsAddTastingModalOpen(false)}
-                  className="px-4 py-2 bg-[#251710] hover:bg-[#321f15] text-[#caa890] rounded-xl border border-[#3e2618]"
+                  className="p-1 text-[#9c7860] hover:text-[#fdf8f3] cursor-pointer"
                 >
-                  Отмена
-                </button>
-                <button
-                  type="submit"
-                  className="px-6 py-2 btn-crema border border-[#f3be7a]/60 text-[#140d09] font-bold rounded-xl"
-                >
-                  Записать дегустацию
+                  <X className="w-5 h-5" />
                 </button>
               </div>
-            </form>
-          </div>
-        </div>
-      )}
+
+              <form onSubmit={handleSaveTasting} className="space-y-4 overflow-y-auto flex-1 min-h-0 pr-1.5 py-3 text-xs sm:text-sm">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[#d8c0b0] font-medium mb-1">Название зерна *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Ethiopia Yirgacheffe..."
+                      value={newTasting.beanName}
+                      onChange={(e) => setNewTasting({ ...newTasting, beanName: e.target.value })}
+                      className="w-full rounded-xl px-3 py-2 text-[#fdf8f3] border"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[#d8c0b0] font-medium mb-1">Способ заваривания</label>
+                    <input
+                      type="text"
+                      placeholder="V60, AeroPress, Chemex..."
+                      value={newTasting.methodName}
+                      onChange={(e) => setNewTasting({ ...newTasting, methodName: e.target.value })}
+                      className="w-full rounded-xl px-3 py-2 text-[#fdf8f3] border"
+                    />
+                  </div>
+                </div>
+
+                {/* Brew parameters row */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  <div>
+                    <label className="block text-[#caa890] text-xs mb-1">Кофе (г)</label>
+                    <input
+                      type="number"
+                      step="0.5"
+                      value={newTasting.coffeeGrams}
+                      onChange={(e) => setNewTasting({ ...newTasting, coffeeGrams: parseFloat(e.target.value) || 0 })}
+                      className="w-full rounded-lg px-2.5 py-1.5 border"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[#caa890] text-xs mb-1">Вода (г)</label>
+                    <input
+                      type="number"
+                      value={newTasting.waterGrams}
+                      onChange={(e) => setNewTasting({ ...newTasting, waterGrams: parseInt(e.target.value, 10) || 0 })}
+                      className="w-full rounded-lg px-2.5 py-1.5 border"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[#caa890] text-xs mb-1">Время (сек)</label>
+                    <input
+                      type="number"
+                      value={newTasting.brewTimeSeconds}
+                      onChange={(e) => setNewTasting({ ...newTasting, brewTimeSeconds: parseInt(e.target.value, 10) || 0 })}
+                      className="w-full rounded-lg px-2.5 py-1.5 border"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[#caa890] text-xs mb-1">Помол</label>
+                    <input
+                      type="text"
+                      placeholder="22 клика"
+                      value={newTasting.grindSize}
+                      onChange={(e) => setNewTasting({ ...newTasting, grindSize: e.target.value })}
+                      className="w-full rounded-lg px-2.5 py-1.5 border"
+                    />
+                  </div>
+                </div>
+
+                {/* Star rating */}
+                <div className="bg-[#140c08] p-3 rounded-xl border border-[#342014] flex items-center justify-between">
+                  <span className="text-[#d8c0b0] font-medium">Общая оценка чашки:</span>
+                  <div className="flex items-center gap-1">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <Star
+                        key={s}
+                        onClick={() => setNewTasting({ ...newTasting, rating: s })}
+                        className={`w-6 h-6 cursor-pointer transition-transform hover:scale-110 ${
+                          s <= (newTasting.rating || 5)
+                            ? 'text-[#f5be7e] fill-[#f5be7e]'
+                            : 'text-[#362114]'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Interactive Radar Sensory Profile */}
+                <div className="bg-[#140c08] p-4 rounded-xl border border-[#482d1c]">
+                  <span className="block text-xs uppercase tracking-wider font-bold text-[#f5be7e] mb-2 text-center">
+                    Сенсорный вкусовой радар
+                  </span>
+                  <RadarChart
+                    data={
+                      newTasting.flavorProfile || {
+                        acidity: 7,
+                        sweetness: 7,
+                        bitterness: 3,
+                        body: 6,
+                        aftertaste: 7,
+                        clarity: 8,
+                      }
+                    }
+                    size={240}
+                    editable={true}
+                    onChange={(key, val) => {
+                      const currentProf = newTasting.flavorProfile || {
+                        acidity: 7,
+                        sweetness: 7,
+                        bitterness: 3,
+                        body: 6,
+                        aftertaste: 7,
+                        clarity: 8,
+                      };
+                      setNewTasting({
+                        ...newTasting,
+                        flavorProfile: { ...currentProf, [key]: val },
+                      });
+                    }}
+                  />
+                </div>
+
+                {/* Descriptors Picker */}
+                <DescriptorPicker
+                  selected={newTasting.descriptors || []}
+                  onChange={(tags) => setNewTasting({ ...newTasting, descriptors: tags })}
+                />
+
+                <div>
+                  <label className="block text-[#d8c0b0] font-medium mb-1">Вердикт и вкусовые заметки</label>
+                  <textarea
+                    rows={2}
+                    placeholder="Как менялся вкус по мере остывания чашки, баланс сладости и тела..."
+                    value={newTasting.verdictNotes}
+                    onChange={(e) => setNewTasting({ ...newTasting, verdictNotes: e.target.value })}
+                    className="w-full rounded-xl px-3 py-2 border"
+                  />
+                </div>
+
+                <div className="pt-3 border-t border-[#342014] flex justify-end gap-2 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => setIsAddTastingModalOpen(false)}
+                    className="px-4 py-2 bg-[#251710] hover:bg-[#321f15] text-[#caa890] rounded-xl border border-[#3e2618] cursor-pointer"
+                  >
+                    Отмена
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-6 py-2 btn-crema border border-[#f3be7a]/60 text-[#140d09] font-bold rounded-xl cursor-pointer"
+                  >
+                    Записать дегустацию
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 };

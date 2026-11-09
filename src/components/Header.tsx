@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Info, X, Sparkles, Heart } from 'lucide-react';
 import { CyberOwlLogo } from './CyberOwlLogo';
 
@@ -57,67 +58,69 @@ export const Header: React.FC<HeaderProps> = ({ beansCount, tastingsCount }) => 
       </header>
 
       {/* About Modal */}
-      {isAboutOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
-          <div className="bg-[#1e130c] border border-[#5a3723] rounded-2xl w-full max-w-md p-6 shadow-2xl relative animate-fade-in text-[#ede2d3]">
-            <button
-              onClick={() => setIsAboutOpen(false)}
-              className="absolute top-4 right-4 p-1.5 text-[#9e7e68] hover:text-[#fdf8f3] hover:bg-[#2e1d13] rounded-lg transition-colors cursor-pointer"
-            >
-              <X className="w-5 h-5" />
-            </button>
+      {isAboutOpen &&
+        createPortal(
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
+            <div className="bg-[#1e130c] border border-[#5a3723] rounded-2xl w-full max-w-md p-6 shadow-2xl relative my-auto animate-fade-in text-[#ede2d3] max-h-[90vh] overflow-y-auto">
+              <button
+                onClick={() => setIsAboutOpen(false)}
+                className="absolute top-4 right-4 p-1.5 text-[#9e7e68] hover:text-[#fdf8f3] hover:bg-[#2e1d13] rounded-lg transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
 
-            <div className="flex items-center gap-3.5 mb-4">
-              <div className="w-13 h-13 rounded-2xl bg-[#140c08] border border-[#d48b46]/50 flex items-center justify-center shadow-lg shadow-[#d48b46]/20 p-2">
-                <CyberOwlLogo className="w-9 h-9" />
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h3 className="text-xl font-bold text-[#fdf8f3] font-serif">CoffeeCraft</h3>
-                  <span className="text-[11px] font-bold text-[#f5be7e] bg-[#d48b46]/20 border border-[#d48b46]/40 px-2 py-0.5 rounded-full font-mono">
-                    by CyberOwl
-                  </span>
+              <div className="flex items-center gap-3.5 mb-4">
+                <div className="w-13 h-13 rounded-2xl bg-[#140c08] border border-[#d48b46]/50 flex items-center justify-center shadow-lg shadow-[#d48b46]/20 p-2">
+                  <CyberOwlLogo className="w-9 h-9" />
                 </div>
-                <span className="text-xs text-[#d48b46] font-medium">Specialty Coffee Companion</span>
-              </div>
-            </div>
-
-            <div className="space-y-3 text-xs sm:text-sm text-[#d8c0b0] leading-relaxed">
-              <p>
-                Цифровой компаньон для домашних кофейных гиков, энтузиастов и бариста. Разработано в лаборатории <strong>CyberOwl</strong> для точного заваривания и осознанной сенсорной дегустации.
-              </p>
-              <div className="bg-[#140c08] p-3.5 rounded-xl border border-[#3f2719] space-y-2 text-xs">
-                <div className="flex items-center gap-2 text-[#f5be7e]">
-                  <Sparkles className="w-3.5 h-3.5 text-[#d48b46] shrink-0" />
-                  <span>Пошаговые интерактивные таймеры заваривания со звуком</span>
-                </div>
-                <div className="flex items-center gap-2 text-[#f5be7e]">
-                  <Sparkles className="w-3.5 h-3.5 text-[#d48b46] shrink-0" />
-                  <span>Дневник с сенсорным вкусовым радаром и SCA колесом</span>
-                </div>
-                <div className="flex items-center gap-2 text-[#f5be7e]">
-                  <Sparkles className="w-3.5 h-3.5 text-[#d48b46] shrink-0" />
-                  <span>Энциклопедия напитков с анатомией слоев в бокале</span>
-                </div>
-                <div className="flex items-center gap-2 text-[#f5be7e]">
-                  <Sparkles className="w-3.5 h-3.5 text-[#d48b46] shrink-0" />
-                  <span>Гид по кликам кофемолок и калькулятор экстракции TDS</span>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-xl font-bold text-[#fdf8f3] font-serif">CoffeeCraft</h3>
+                    <span className="text-[11px] font-bold text-[#f5be7e] bg-[#d48b46]/20 border border-[#d48b46]/40 px-2 py-0.5 rounded-full font-mono">
+                      by CyberOwl
+                    </span>
+                  </div>
+                  <span className="text-xs text-[#d48b46] font-medium">Specialty Coffee Companion</span>
                 </div>
               </div>
-              <p className="text-[#a88a75] text-xs">
-                Все ваши записи, сорта и настройки сохраняются в локальной памяти браузера и работают без подключения к сети.
-              </p>
-            </div>
 
-            <div className="mt-5 pt-4 border-t border-[#3a2316] flex items-center justify-between text-xs text-[#8c6d59]">
-              <span className="flex items-center gap-1.5">
-                Crafted with <Heart className="w-3.5 h-3.5 text-[#d48b46] fill-[#d48b46]" /> by CyberOwl
-              </span>
-              <span className="font-mono">v1.3.0</span>
+              <div className="space-y-3 text-xs sm:text-sm text-[#d8c0b0] leading-relaxed">
+                <p>
+                  Цифровой компаньон для домашних кофейных гиков, энтузиастов и бариста. Разработано в лаборатории <strong>CyberOwl</strong> для точного заваривания и осознанной сенсорной дегустации.
+                </p>
+                <div className="bg-[#140c08] p-3.5 rounded-xl border border-[#3f2719] space-y-2 text-xs">
+                  <div className="flex items-center gap-2 text-[#f5be7e]">
+                    <Sparkles className="w-3.5 h-3.5 text-[#d48b46] shrink-0" />
+                    <span>Пошаговые интерактивные таймеры заваривания со звуком</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-[#f5be7e]">
+                    <Sparkles className="w-3.5 h-3.5 text-[#d48b46] shrink-0" />
+                    <span>Дневник с сенсорным вкусовым радаром и SCA колесом</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-[#f5be7e]">
+                    <Sparkles className="w-3.5 h-3.5 text-[#d48b46] shrink-0" />
+                    <span>Энциклопедия напитков с анатомией слоев в бокале</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-[#f5be7e]">
+                    <Sparkles className="w-3.5 h-3.5 text-[#d48b46] shrink-0" />
+                    <span>Гид по кликам кофемолок и калькулятор экстракции TDS</span>
+                  </div>
+                </div>
+                <p className="text-[#a88a75] text-xs">
+                  Все ваши записи, сорта и настройки сохраняются в локальной памяти браузера и работают без подключения к сети.
+                </p>
+              </div>
+
+              <div className="mt-5 pt-4 border-t border-[#3a2316] flex items-center justify-between text-xs text-[#8c6d59]">
+                <span className="flex items-center gap-1.5">
+                  Crafted with <Heart className="w-3.5 h-3.5 text-[#d48b46] fill-[#d48b46]" /> by CyberOwl
+                </span>
+                <span className="font-mono">v1.3.0</span>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
     </>
   );
 };

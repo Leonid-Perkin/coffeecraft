@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import type { BrewMethod, BrewStep } from '../../types';
 import { soundManager } from '../../utils/audio';
 import {
@@ -156,11 +157,11 @@ export const BrewTimer: React.FC<BrewTimerProps> = ({
   const stepProgress = Math.min(100, (stepSecondsElapsed / (currentStep.timeSeconds || 1)) * 100);
   const totalProgress = Math.min(100, (totalSecondsElapsed / (totalBrewSeconds || 1)) * 100);
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
-      <div className="bg-[#1b110a] border border-[#52331f] rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden flex flex-col my-auto text-[#ede2d3]">
+  return createPortal(
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
+      <div className="bg-[#1b110a] border border-[#52331f] rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden flex flex-col my-auto max-h-[95vh] text-[#ede2d3]">
         {/* Header Bar */}
-        <div className="flex items-center justify-between px-5 py-3.5 bg-[#140c08] border-b border-[#382215]">
+        <div className="flex items-center justify-between px-5 py-3.5 bg-[#140c08] border-b border-[#382215] shrink-0">
           <div>
             <span className="text-xs uppercase tracking-wider font-semibold text-[#d48b46]">
               Пошаговый таймер
@@ -188,7 +189,7 @@ export const BrewTimer: React.FC<BrewTimerProps> = ({
         </div>
 
         {/* Recipe Summary Pills */}
-        <div className="grid grid-cols-3 gap-2 px-5 py-2.5 bg-[#170e09] border-b border-[#2d1b11] text-xs">
+        <div className="grid grid-cols-3 gap-2 px-5 py-2.5 bg-[#170e09] border-b border-[#2d1b11] text-xs shrink-0">
           <div className="text-center">
             <span className="text-[#8e6e58] block">Кофе</span>
             <span className="font-bold text-[#f5be7e]">{coffeeGrams} г</span>
@@ -204,7 +205,7 @@ export const BrewTimer: React.FC<BrewTimerProps> = ({
         </div>
 
         {/* Center Countdown & Visual Progress */}
-        <div className="p-6 flex flex-col items-center text-center">
+        <div className="p-5 sm:p-6 flex flex-col items-center text-center overflow-y-auto flex-1">
           {!isCompleted ? (
             <>
               {/* Step indicator */}
@@ -376,6 +377,7 @@ export const BrewTimer: React.FC<BrewTimerProps> = ({
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
