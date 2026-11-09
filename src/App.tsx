@@ -101,10 +101,12 @@ export const App: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-neutral-900 bg-neutral-950/80 py-6 px-4 text-center text-xs text-neutral-500">
+      <footer className="border-t border-[#341f14] bg-[#140c08]/90 py-6 px-4 text-center text-xs text-[#8e6e58]">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-          <span>CoffeeCraft Pro — Спешелти компаньон и помощник заваривания кофе</span>
-          <span>© 2026 CoffeeCraft. Сварено со вкусом.</span>
+          <span className="flex items-center justify-center gap-1.5 text-[#caa890]">
+            <strong className="text-[#f5be7e]">CoffeeCraft</strong> by CyberOwl — Спешелти компаньон и помощник заваривания кофе
+          </span>
+          <span className="font-mono text-[#8e6e58]">© 2026 CyberOwl. Crafted with precision.</span>
         </div>
       </footer>
     </div>
