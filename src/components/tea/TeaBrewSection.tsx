@@ -46,14 +46,14 @@ export const TeaBrewSection: React.FC<TeaBrewSectionProps> = ({ onLogToTeaJourna
   return (
     <div className="space-y-8 animate-fade-in text-[#ede2d3]">
       {/* Category header tabs */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+      <div className="flex flex-wrap items-center gap-2 pb-1">
         {TEA_METHODS.map((m) => {
           const isSelected = m.id === selectedMethodId;
           return (
             <button
               key={m.id}
               onClick={() => handleSelectMethod(m)}
-              className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${
+              className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer ${
                 isSelected
                   ? 'bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-bold shadow-md shadow-emerald-700/30 border border-emerald-400/50'
                   : 'bg-[#152319]/80 text-[#a7c5b1] hover:text-[#f2f7f0] hover:bg-[#1f3526] border border-[#233a2a]'
@@ -261,6 +261,8 @@ export const TeaBrewSection: React.FC<TeaBrewSectionProps> = ({ onLogToTeaJourna
           }}
           coffeeGrams={leafGrams}
           waterGrams={waterGrams}
+          theme="tea"
+          doseLabel="Чайный лист"
           onFinishAndLog={(details) => {
             setActiveTimerMethod(null);
             onLogToTeaJournal({

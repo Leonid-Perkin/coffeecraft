@@ -18,7 +18,7 @@ export const TeaEncyclopediaSection: React.FC = () => {
   return (
     <div className="space-y-8 animate-fade-in text-[#ede2d3]">
       {/* Category Pills Header */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+      <div className="flex flex-wrap items-center gap-2 pb-1">
         {TEA_CATEGORIES_INFO.map((cat) => {
           const isSelected = cat.id === selectedCategoryId;
           return (

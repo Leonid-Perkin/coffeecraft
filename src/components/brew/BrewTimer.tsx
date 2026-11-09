@@ -20,6 +20,8 @@ interface BrewTimerProps {
   method: BrewMethod;
   coffeeGrams: number;
   waterGrams: number;
+  theme?: 'coffee' | 'tea';
+  doseLabel?: string;
   onFinishAndLog: (details: {
     methodName: string;
     coffeeGrams: number;
@@ -35,9 +37,13 @@ export const BrewTimer: React.FC<BrewTimerProps> = ({
   method,
   coffeeGrams,
   waterGrams,
+  theme = 'coffee',
+  doseLabel = 'Кофе',
   onFinishAndLog,
   onClose,
 }) => {
+  const isTea = theme === 'tea';
+
   // Scale steps based on user's target water ratio
   const ratioMultiplier = waterGrams / method.defaultWaterGrams;
 
@@ -92,7 +98,9 @@ export const BrewTimer: React.FC<BrewTimerProps> = ({
                   particleCount: 120,
                   spread: 80,
                   origin: { y: 0.6 },
-                  colors: ['#d48b46', '#c88344', '#f5be7e', '#8a5332', '#fbf6ee']
+                  colors: isTea
+                    ? ['#34d399', '#10b981', '#6ee7b7', '#f2f7f0', '#059669']
+                    : ['#d48b46', '#c88344', '#f5be7e', '#8a5332', '#fbf6ee'],
                 });
               } catch {
                 // Ignore confetti error if any
@@ -159,12 +167,24 @@ export const BrewTimer: React.FC<BrewTimerProps> = ({
 
   return createPortal(
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
-      <div className="bg-[#1b110a] border border-[#52331f] rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden flex flex-col my-auto max-h-[95vh] text-[#ede2d3]">
+      <div
+        className={`border rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden flex flex-col my-auto max-h-[95vh] text-[#ede2d3] transition-colors ${
+          isTea ? 'bg-[#101c13] border-[#2b4d34]' : 'bg-[#1b110a] border-[#52331f]'
+        }`}
+      >
         {/* Header Bar */}
-        <div className="flex items-center justify-between px-5 py-3.5 bg-[#140c08] border-b border-[#382215] shrink-0">
+        <div
+          className={`flex items-center justify-between px-5 py-3.5 border-b shrink-0 ${
+            isTea ? 'bg-[#0a140d] border-[#1d3323]' : 'bg-[#140c08] border-[#382215]'
+          }`}
+        >
           <div>
-            <span className="text-xs uppercase tracking-wider font-semibold text-[#d48b46]">
-              Пошаговый таймер
+            <span
+              className={`text-xs uppercase tracking-wider font-semibold ${
+                isTea ? 'text-emerald-400' : 'text-[#d48b46]'
+              }`}
+            >
+              {isTea ? 'Чайный таймер' : 'Пошаговый таймер'}
             </span>
             <h3 className="text-base font-semibold text-[#fdf8f3] leading-tight font-serif">
               {method.name}
@@ -174,14 +194,22 @@ export const BrewTimer: React.FC<BrewTimerProps> = ({
           <div className="flex items-center gap-2">
             <button
               onClick={() => setSoundEnabled(!soundEnabled)}
-              className="p-2 rounded-lg text-[#caa890] hover:text-[#f5be7e] hover:bg-[#251710] transition-colors"
+              className={`p-2 rounded-lg transition-colors cursor-pointer ${
+                isTea
+                  ? 'text-[#8ab396] hover:text-emerald-300 hover:bg-[#1a2e20]'
+                  : 'text-[#caa890] hover:text-[#f5be7e] hover:bg-[#251710]'
+              }`}
               title={soundEnabled ? 'Выключить звук' : 'Включить звук'}
             >
               {soundEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
             </button>
             <button
               onClick={onClose}
-              className="text-[#9c7860] hover:text-[#fdf8f3] px-2.5 py-1 text-sm rounded-lg hover:bg-[#251710]"
+              className={`px-2.5 py-1 text-sm rounded-lg cursor-pointer ${
+                isTea
+                  ? 'text-[#7ea38b] hover:text-[#fdf8f3] hover:bg-[#1a2e20]'
+                  : 'text-[#9c7860] hover:text-[#fdf8f3] hover:bg-[#251710]'
+              }`}
             >
               Закрыть
             </button>
@@ -189,18 +217,28 @@ export const BrewTimer: React.FC<BrewTimerProps> = ({
         </div>
 
         {/* Recipe Summary Pills */}
-        <div className="grid grid-cols-3 gap-2 px-5 py-2.5 bg-[#170e09] border-b border-[#2d1b11] text-xs shrink-0">
+        <div
+          className={`grid grid-cols-3 gap-2 px-5 py-2.5 border-b text-xs shrink-0 ${
+            isTea ? 'bg-[#0f1a12] border-[#1c3022]' : 'bg-[#170e09] border-[#2d1b11]'
+          }`}
+        >
           <div className="text-center">
-            <span className="text-[#8e6e58] block">Кофе</span>
-            <span className="font-bold text-[#f5be7e]">{coffeeGrams} г</span>
+            <span className={`block ${isTea ? 'text-[#6e9278]' : 'text-[#8e6e58]'}`}>{doseLabel}</span>
+            <span className={`font-bold ${isTea ? 'text-emerald-300' : 'text-[#f5be7e]'}`}>
+              {coffeeGrams} г
+            </span>
           </div>
-          <div className="text-center border-x border-[#382215]">
-            <span className="text-[#8e6e58] block">Вода</span>
-            <span className="font-bold text-[#f5be7e]">{waterGrams} г</span>
+          <div className={`text-center border-x ${isTea ? 'border-[#1c3022]' : 'border-[#382215]'}`}>
+            <span className={`block ${isTea ? 'text-[#6e9278]' : 'text-[#8e6e58]'}`}>Вода</span>
+            <span className={`font-bold ${isTea ? 'text-emerald-300' : 'text-[#f5be7e]'}`}>
+              {waterGrams} г
+            </span>
           </div>
           <div className="text-center">
-            <span className="text-[#8e6e58] block">Температура</span>
-            <span className="font-bold text-[#f5be7e]">{method.recommendedTempC}°C</span>
+            <span className={`block ${isTea ? 'text-[#6e9278]' : 'text-[#8e6e58]'}`}>Температура</span>
+            <span className={`font-bold ${isTea ? 'text-emerald-300' : 'text-[#f5be7e]'}`}>
+              {method.recommendedTempC}°C
+            </span>
           </div>
         </div>
 
@@ -215,16 +253,26 @@ export const BrewTimer: React.FC<BrewTimerProps> = ({
                     key={idx}
                     className={`h-1.5 rounded-full transition-all duration-300 ${
                       idx === currentStepIndex
-                        ? 'w-8 bg-[#d48b46]'
+                        ? isTea
+                          ? 'w-8 bg-emerald-400'
+                          : 'w-8 bg-[#d48b46]'
                         : idx < currentStepIndex
-                        ? 'w-3 bg-[#8a5332]'
+                        ? isTea
+                          ? 'w-3 bg-emerald-700'
+                          : 'w-3 bg-[#8a5332]'
+                        : isTea
+                        ? 'w-2 bg-[#1c3322]'
                         : 'w-2 bg-[#362114]'
                     }`}
                   />
                 ))}
               </div>
 
-              <div className="text-xs text-[#d48b46] font-medium tracking-wide uppercase mt-1">
+              <div
+                className={`text-xs font-medium tracking-wide uppercase mt-1 ${
+                  isTea ? 'text-emerald-400' : 'text-[#d48b46]'
+                }`}
+              >
                 Шаг {currentStepIndex + 1} из {scaledSteps.length}
               </div>
 
@@ -234,19 +282,31 @@ export const BrewTimer: React.FC<BrewTimerProps> = ({
               </h4>
 
               {/* Step instructions */}
-              <p className="text-[#d8c0b0] text-sm max-w-sm mb-4 leading-relaxed bg-[#140c08] p-3 rounded-xl border border-[#382215]">
+              <p
+                className={`text-sm max-w-sm mb-4 leading-relaxed p-3 rounded-xl border ${
+                  isTea
+                    ? 'text-[#c7dfcd] bg-[#0c160e] border-[#1d3523]'
+                    : 'text-[#d8c0b0] bg-[#140c08] border-[#382215]'
+                }`}
+              >
                 {currentStep.description}
               </p>
 
               {/* Big Timer Circle / Card */}
-              <div className="relative w-52 h-52 flex flex-col items-center justify-center rounded-full bg-gradient-to-b from-[#2b1910] to-[#140c08] border-4 border-[#5a3824] shadow-2xl mb-4">
+              <div
+                className={`relative w-52 h-52 flex flex-col items-center justify-center rounded-full bg-gradient-to-b border-4 shadow-2xl mb-4 ${
+                  isTea
+                    ? 'from-[#172e20] to-[#0a140d] border-emerald-500/40'
+                    : 'from-[#2b1910] to-[#140c08] border-[#5a3824]'
+                }`}
+              >
                 {/* Visual circular svg progress */}
                 <svg className="absolute inset-0 w-full h-full -rotate-90">
                   <circle
                     cx="104"
                     cy="104"
                     r="98"
-                    className="stroke-[#23150d]"
+                    className={isTea ? 'stroke-[#14261a]' : 'stroke-[#23150d]'}
                     strokeWidth="6"
                     fill="transparent"
                   />
@@ -254,7 +314,9 @@ export const BrewTimer: React.FC<BrewTimerProps> = ({
                     cx="104"
                     cy="104"
                     r="98"
-                    className="stroke-[#d48b46] transition-all duration-300 ease-linear"
+                    className={`transition-all duration-300 ease-linear ${
+                      isTea ? 'stroke-emerald-400' : 'stroke-[#d48b46]'
+                    }`}
                     strokeWidth="6"
                     fill="transparent"
                     strokeDasharray={2 * Math.PI * 98}
@@ -263,37 +325,62 @@ export const BrewTimer: React.FC<BrewTimerProps> = ({
                   />
                 </svg>
 
-                <span className="text-xs text-[#a3826c] uppercase tracking-wider mb-0.5 z-10">
+                <span
+                  className={`text-xs uppercase tracking-wider mb-0.5 z-10 ${
+                    isTea ? 'text-[#7ea38b]' : 'text-[#a3826c]'
+                  }`}
+                >
                   Осталось
                 </span>
                 <span className="text-4xl sm:text-5xl font-extrabold text-[#fdf8f3] font-mono z-10 tracking-tight">
                   {formatTime(stepSecondsLeft)}
                 </span>
-                <div className="text-xs text-[#a3826c] mt-1 z-10 font-mono">
+                <div
+                  className={`text-xs mt-1 z-10 font-mono ${
+                    isTea ? 'text-[#7ea38b]' : 'text-[#a3826c]'
+                  }`}
+                >
                   Всего: {formatTime(totalSecondsElapsed)}
                 </div>
               </div>
 
               {/* Water Target Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#d48b46]/15 border border-[#d48b46]/40 rounded-xl text-[#f5be7e] font-medium text-sm mb-4">
-                <Droplets className="w-4 h-4 text-[#d48b46]" />
-                <span>Цель на весах: <strong className="text-[#fdf8f3] text-base">{currentStep.targetWaterGrams} г</strong></span>
+              <div
+                className={`inline-flex items-center gap-2 px-4 py-2 border rounded-xl font-medium text-sm mb-4 ${
+                  isTea
+                    ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300'
+                    : 'bg-[#d48b46]/15 border-[#d48b46]/40 text-[#f5be7e]'
+                }`}
+              >
+                <Droplets className={`w-4 h-4 ${isTea ? 'text-emerald-400' : 'text-[#d48b46]'}`} />
+                <span>
+                  Цель на весах:{' '}
+                  <strong className="text-[#fdf8f3] text-base">{currentStep.targetWaterGrams} г</strong>
+                </span>
               </div>
             </>
           ) : (
             /* Finished Screen */
             <div className="py-6 flex flex-col items-center animate-fade-in">
-              <div className="w-20 h-20 rounded-full bg-[#d48b46]/20 border-2 border-[#d48b46] flex items-center justify-center text-[#f5be7e] mb-4 shadow-xl shadow-[#d48b46]/20">
+              <div
+                className={`w-20 h-20 rounded-full border-2 flex items-center justify-center mb-4 shadow-xl ${
+                  isTea
+                    ? 'bg-emerald-500/20 border-emerald-400 text-emerald-300 shadow-emerald-500/20'
+                    : 'bg-[#d48b46]/20 border-[#d48b46] text-[#f5be7e] shadow-[#d48b46]/20'
+                }`}
+              >
                 <CheckCircle2 className="w-12 h-12 stroke-[2.2]" />
               </div>
 
               <h4 className="text-2xl font-bold text-[#fdf8f3] mb-1 font-serif">
-                Чашка готова к дегустации!
+                {isTea ? 'Настой готов к разливу!' : 'Чашка готова к дегустации!'}
               </h4>
-              <p className="text-[#caa890] text-sm max-w-xs mb-6">
+              <p className={`text-sm max-w-xs mb-6 ${isTea ? 'text-[#a0c4ab]' : 'text-[#caa890]'}`}>
                 Вы завершили заваривание {method.name} за{' '}
-                <span className="text-[#f5be7e] font-bold">{formatTime(totalSecondsElapsed)}</span>.
-                Дайте напитку остыть до 60–65°C для идеального раскрытия букета.
+                <span className={`font-bold ${isTea ? 'text-emerald-300' : 'text-[#f5be7e]'}`}>
+                  {formatTime(totalSecondsElapsed)}
+                </span>
+                . {isTea ? 'Разлейте по пиалам и насладитесь ароматом.' : 'Дайте напитку остыть для раскрытия букета.'}
               </p>
 
               <button
@@ -307,19 +394,31 @@ export const BrewTimer: React.FC<BrewTimerProps> = ({
                     waterTempC: method.recommendedTempC,
                   })
                 }
-                className="w-full sm:w-auto px-7 py-3.5 btn-crema border border-[#f3be7a]/60 text-[#140d09] font-bold rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer"
+                className={`w-full sm:w-auto px-7 py-3.5 font-bold rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                  isTea
+                    ? 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 text-[#09150d] border border-emerald-300/50 shadow-lg shadow-emerald-700/30'
+                    : 'btn-crema border border-[#f3be7a]/60 text-[#140d09]'
+                }`}
               >
                 <BookOpen className="w-5 h-5" />
-                Записать результат в дневник
+                {isTea ? 'Записать чаепитие в дневник' : 'Записать результат в дневник'}
               </button>
             </div>
           )}
 
           {/* Overall progress bar */}
           {!isCompleted && (
-            <div className="w-full bg-[#24150d] rounded-full h-1.5 overflow-hidden mb-5">
+            <div
+              className={`w-full rounded-full h-1.5 overflow-hidden mb-5 ${
+                isTea ? 'bg-[#15271b]' : 'bg-[#24150d]'
+              }`}
+            >
               <div
-                className="bg-gradient-to-r from-[#8a5332] via-[#d48b46] to-[#f5be7e] h-full transition-all duration-300"
+                className={`h-full transition-all duration-300 ${
+                  isTea
+                    ? 'bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-300'
+                    : 'bg-gradient-to-r from-[#8a5332] via-[#d48b46] to-[#f5be7e]'
+                }`}
                 style={{ width: `${totalProgress}%` }}
               />
             </div>
@@ -331,7 +430,11 @@ export const BrewTimer: React.FC<BrewTimerProps> = ({
               <button
                 onClick={handlePrevStep}
                 disabled={currentStepIndex === 0}
-                className="p-3 rounded-xl bg-[#251710] hover:bg-[#342016] disabled:opacity-30 disabled:cursor-not-allowed text-[#ede2d3] border border-[#3e2618] transition-colors cursor-pointer"
+                className={`p-3 rounded-xl disabled:opacity-30 disabled:cursor-not-allowed border transition-colors cursor-pointer ${
+                  isTea
+                    ? 'bg-[#152418] hover:bg-[#1f3624] text-[#ede2d3] border-[#25422d]'
+                    : 'bg-[#251710] hover:bg-[#342016] text-[#ede2d3] border-[#3e2618]'
+                }`}
                 title="Предыдущий шаг"
               >
                 <SkipBack className="w-5 h-5" />
@@ -341,7 +444,11 @@ export const BrewTimer: React.FC<BrewTimerProps> = ({
                 onClick={handleStartPause}
                 className={`px-8 py-3.5 rounded-xl font-bold text-base flex items-center gap-2.5 transition-all cursor-pointer ${
                   isRunning
-                    ? 'bg-[#8a5332] text-[#fdf8f3] border border-[#d48b46]/50 shadow-md'
+                    ? isTea
+                      ? 'bg-[#1c3b26] text-emerald-200 border border-emerald-500/50 shadow-md'
+                      : 'bg-[#8a5332] text-[#fdf8f3] border border-[#d48b46]/50 shadow-md'
+                    : isTea
+                    ? 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 text-[#09150d] font-bold border border-emerald-300/50 shadow-lg shadow-emerald-700/30'
                     : 'btn-crema border border-[#f3be7a]/60 text-[#140d09]'
                 }`}
               >
@@ -360,7 +467,11 @@ export const BrewTimer: React.FC<BrewTimerProps> = ({
 
               <button
                 onClick={handleNextStep}
-                className="p-3 rounded-xl bg-[#251710] hover:bg-[#342016] text-[#ede2d3] border border-[#3e2618] transition-colors cursor-pointer"
+                className={`p-3 rounded-xl border transition-colors cursor-pointer ${
+                  isTea
+                    ? 'bg-[#152418] hover:bg-[#1f3624] text-[#ede2d3] border-[#25422d]'
+                    : 'bg-[#251710] hover:bg-[#342016] text-[#ede2d3] border-[#3e2618]'
+                }`}
                 title="Следующий шаг"
               >
                 <SkipForward className="w-5 h-5" />
@@ -368,7 +479,11 @@ export const BrewTimer: React.FC<BrewTimerProps> = ({
 
               <button
                 onClick={handleReset}
-                className="p-3 rounded-xl bg-[#251710] hover:bg-[#342016] text-[#9c7860] hover:text-[#fdf8f3] border border-[#3e2618] transition-colors ml-1 cursor-pointer"
+                className={`p-3 rounded-xl border transition-colors ml-1 cursor-pointer ${
+                  isTea
+                    ? 'bg-[#152418] hover:bg-[#1f3624] text-[#7ea38b] hover:text-[#fdf8f3] border-[#25422d]'
+                    : 'bg-[#251710] hover:bg-[#342016] text-[#9c7860] hover:text-[#fdf8f3] border-[#3e2618]'
+                }`}
                 title="Сбросить таймер"
               >
                 <RotateCcw className="w-5 h-5" />

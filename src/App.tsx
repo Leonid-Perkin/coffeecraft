@@ -9,6 +9,7 @@ import { ToolkitSection } from './components/grind/ToolkitSection';
 import { TeaBrewSection } from './components/tea/TeaBrewSection';
 import { TeaJournalSection } from './components/tea/TeaJournalSection';
 import { TeaEncyclopediaSection } from './components/tea/TeaEncyclopediaSection';
+import { TeaWaterSection } from './components/tea/TeaWaterSection';
 import { INITIAL_BEANS, INITIAL_TASTINGS } from './data/sampleData';
 import { INITIAL_TEAS, INITIAL_TEA_TASTINGS } from './data/sampleTeaData';
 import type { Bean, TastingEntry } from './types';
@@ -221,7 +222,7 @@ export const App: React.FC = () => {
 
             {activeTab === 'drinks' && <TeaEncyclopediaSection />}
 
-            {activeTab === 'toolkit' && <ToolkitSection />}
+            {activeTab === 'toolkit' && <TeaWaterSection />}
           </>
         )}
       </main>

@@ -3,7 +3,7 @@ import type { TeaCategoryInfo } from '../types/tea';
 export const TEA_CATEGORIES_INFO: TeaCategoryInfo[] = [
   {
     id: 'green',
-    nameRu: 'Зеленый чай',
+    nameRu: 'Зеленый (Люй Ча)',
     nameZh: '绿茶',
     pinyin: 'Lǜ Chá',
     fermentationLevel: '0 – 5% (Неферментированный)',
@@ -17,7 +17,7 @@ export const TEA_CATEGORIES_INFO: TeaCategoryInfo[] = [
   },
   {
     id: 'white',
-    nameRu: 'Белый чай',
+    nameRu: 'Белый (Бай Ча)',
     nameZh: '白茶',
     pinyin: 'Bái Chá',
     fermentationLevel: '5 – 10% (Естественное завяливание)',
@@ -31,8 +31,8 @@ export const TEA_CATEGORIES_INFO: TeaCategoryInfo[] = [
   },
   {
     id: 'oolong',
-    nameRu: 'Улун (Бирюзовый чай)',
-    nameZh: '乌龙茶 / 青茶',
+    nameRu: 'Улун (Цин Ча)',
+    nameZh: '乌龙茶',
     pinyin: 'Wūlóng Chá',
     fermentationLevel: '20 – 70% (Полуферментированный)',
     recommendedTempC: '90°C – 95°C',
@@ -45,7 +45,7 @@ export const TEA_CATEGORIES_INFO: TeaCategoryInfo[] = [
   },
   {
     id: 'red',
-    nameRu: 'Красный чай (Хун Ча)',
+    nameRu: 'Красный (Хун Ча)',
     nameZh: '红茶',
     pinyin: 'Hóng Chá',
     fermentationLevel: '80 – 100% (Полная оксидация)',
@@ -59,8 +59,8 @@ export const TEA_CATEGORIES_INFO: TeaCategoryInfo[] = [
   },
   {
     id: 'puer',
-    nameRu: 'Пуэр и Хэй Ча (Постферментированный)',
-    nameZh: '普洱茶 / 黑茶',
+    nameRu: 'Пуэр и Хэй Ча',
+    nameZh: '普洱茶',
     pinyin: 'Pǔ\'ěr Chá',
     fermentationLevel: '100% + микробная ферментация',
     recommendedTempC: '95°C – 100°C (крутой кипяток)',
