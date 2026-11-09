@@ -531,8 +531,8 @@ export const TeaJournalSection: React.FC<TeaJournalSectionProps> = ({
       {/* Tasting Detail Modal */}
       {selectedTastingView &&
         createPortal(
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
-            <div className="bg-[#101c13] border border-[#2b4d34] rounded-2xl w-full max-w-lg shadow-2xl p-5 sm:p-6 my-auto animate-fade-in text-[#ede2d3] max-h-[92vh] flex flex-col">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-2.5 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
+            <div className="bg-[#101c13] border border-[#2b4d34] rounded-2xl w-full max-w-lg shadow-2xl p-4 sm:p-6 animate-fade-in text-[#ede2d3] max-h-[95vh] sm:max-h-[92vh] flex flex-col">
               <div className="flex items-center justify-between pb-3 border-b border-[#213a27] shrink-0">
                 <div>
                   <span className="text-xs font-semibold text-emerald-400">
@@ -616,8 +616,8 @@ export const TeaJournalSection: React.FC<TeaJournalSectionProps> = ({
       {/* Add New Tea Modal */}
       {isAddTeaModalOpen &&
         createPortal(
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
-            <div className="bg-[#101c13] border border-[#2b4d34] rounded-2xl w-full max-w-lg shadow-2xl p-5 sm:p-6 my-auto max-h-[92vh] flex flex-col text-[#ede2d3]">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-2.5 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
+            <div className="bg-[#101c13] border border-[#2b4d34] rounded-2xl w-full max-w-lg shadow-2xl p-4 sm:p-6 max-h-[95vh] sm:max-h-[92vh] flex flex-col text-[#ede2d3]">
               <div className="flex items-center justify-between pb-3 border-b border-[#213a27] shrink-0">
                 <h3 className="text-lg font-bold text-[#f2f7f0] font-serif flex items-center gap-2">
                   <Feather className="w-5 h-5 text-emerald-400" />
@@ -755,8 +755,8 @@ export const TeaJournalSection: React.FC<TeaJournalSectionProps> = ({
       {/* Add New Tea Tasting Modal */}
       {isAddTastingModalOpen &&
         createPortal(
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
-            <div className="bg-[#101c13] border border-[#2b4d34] rounded-2xl w-full max-w-2xl shadow-2xl p-5 sm:p-6 my-auto max-h-[92vh] flex flex-col text-[#ede2d3]">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-2.5 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
+            <div className="bg-[#101c13] border border-[#2b4d34] rounded-2xl w-full max-w-2xl shadow-2xl p-4 sm:p-6 max-h-[95vh] sm:max-h-[92vh] flex flex-col text-[#ede2d3]">
               <div className="flex items-center justify-between pb-3 border-b border-[#213a27] shrink-0">
                 <h3 className="text-lg font-bold text-[#f2f7f0] font-serif flex items-center gap-2">
                   <FileText className="w-5 h-5 text-emerald-400" />

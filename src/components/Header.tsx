@@ -118,7 +118,7 @@ export const Header: React.FC<HeaderProps> = ({
                   {isTea ? 'TeaCraft' : 'CoffeeCraft'}
                 </h1>
                 <span
-                  className={`text-[10px] font-bold border px-2 py-0.5 rounded-full uppercase tracking-wider font-mono ${
+                  className={`hidden sm:inline-block text-[10px] font-bold border px-2 py-0.5 rounded-full uppercase tracking-wider font-mono ${
                     isTea
                       ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
                       : 'bg-[#d48b46]/20 text-[#f5be7e] border-[#d48b46]/45'

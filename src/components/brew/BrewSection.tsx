@@ -60,12 +60,12 @@ export const BrewSection: React.FC<BrewSectionProps> = ({ onLogToJournal }) => {
   return (
     <div className="space-y-8 animate-fade-in text-[#ede2d3]">
       {/* Category Tabs */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+      <div className="flex flex-wrap items-center gap-2 pb-1">
         {[
           { id: 'all', label: 'Все методы' },
-          { id: 'pressure', label: 'Рожок и Гейзер (Давление)' },
+          { id: 'pressure', label: 'Рожок и Гейзер' },
           { id: 'pourover', label: 'Воронка (Пуровер)' },
-          { id: 'immersion', label: 'Иммерсия (AeroPress / Френч-пресс)' },
+          { id: 'immersion', label: 'AeroPress и Пресс' },
           { id: 'other', label: 'Турка и Cold Brew' },
         ].map((tab) => (
           <button
