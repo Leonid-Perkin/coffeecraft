@@ -10,6 +10,7 @@ import { TeaBrewSection } from './components/tea/TeaBrewSection';
 import { TeaJournalSection } from './components/tea/TeaJournalSection';
 import { TeaEncyclopediaSection } from './components/tea/TeaEncyclopediaSection';
 import { TeaWaterSection } from './components/tea/TeaWaterSection';
+import { PwaUpdatePrompt } from './components/PwaUpdatePrompt';
 import { INITIAL_BEANS, INITIAL_TASTINGS } from './data/sampleData';
 import { INITIAL_TEAS, INITIAL_TEA_TASTINGS } from './data/sampleTeaData';
 import type { Bean, TastingEntry } from './types';
@@ -233,6 +234,9 @@ export const App: React.FC = () => {
             {activeTab === 'toolkit' && <TeaWaterSection />}
           </>
         )}
+
+        {/* Floating PWA Update Notification / Offline Toast */}
+        <PwaUpdatePrompt appMode={appMode} />
       </main>
 
       {/* Footer */}

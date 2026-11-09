@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { Info, X, Sparkles, Heart, Download } from 'lucide-react';
+import { Info, X, Sparkles, Heart, Download, RefreshCw } from 'lucide-react';
 import { CyberOwlLogo } from './CyberOwlLogo';
 
 interface HeaderProps {
@@ -23,6 +23,8 @@ export const Header: React.FC<HeaderProps> = ({
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [canInstall, setCanInstall] = useState(false);
+  const [isCheckingUpdate, setIsCheckingUpdate] = useState(false);
+  const [updateStatusText, setUpdateStatusText] = useState<string | null>(null);
 
   const isTea = appMode === 'tea';
 
@@ -49,6 +51,38 @@ export const Header: React.FC<HeaderProps> = ({
     if (choice?.outcome === 'accepted') {
       setCanInstall(false);
     }
+  };
+
+  const handleCheckUpdate = async () => {
+    setIsCheckingUpdate(true);
+    setUpdateStatusText(null);
+
+    window.dispatchEvent(new CustomEvent('check-pwa-update'));
+
+    if ('serviceWorker' in navigator) {
+      try {
+        const reg = await navigator.serviceWorker.getRegistration();
+        if (reg) {
+          await reg.update();
+          if (reg.waiting) {
+            setUpdateStatusText('Обновление найдено!');
+          } else {
+            setUpdateStatusText('Версия актуальна ✅');
+          }
+        } else {
+          setUpdateStatusText('Оффлайн активен');
+        }
+      } catch {
+        setUpdateStatusText('Ошибка проверки');
+      }
+    } else {
+      setUpdateStatusText('PWA не поддерживается');
+    }
+
+    setIsCheckingUpdate(false);
+    setTimeout(() => {
+      setUpdateStatusText(null);
+    }, 3000);
   };
 
   return (
@@ -169,6 +203,34 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
             )}
 
+            {/* Manual PWA Update Button */}
+            <div className="relative">
+              <button
+                onClick={handleCheckUpdate}
+                disabled={isCheckingUpdate}
+                className={`p-2 rounded-xl transition-colors border cursor-pointer flex items-center justify-center ${
+                  isTea
+                    ? 'text-[#8ab396] hover:text-emerald-300 hover:bg-[#183020] border-[#22402b]'
+                    : 'text-[#caa890] hover:text-[#f5be7e] hover:bg-[#251710] border-[#3f271a]'
+                }`}
+                title="Проверить и обновить PWA"
+              >
+                <RefreshCw className={`w-4 h-4 ${isCheckingUpdate ? 'animate-spin text-emerald-400' : ''}`} />
+              </button>
+
+              {updateStatusText && (
+                <div
+                  className={`absolute -bottom-9 right-0 whitespace-nowrap text-[11px] font-bold px-2.5 py-1 rounded-lg border shadow-xl z-50 animate-fade-in ${
+                    isTea
+                      ? 'bg-[#0f1f14] border-emerald-500/50 text-emerald-300'
+                      : 'bg-[#1c120c] border-[#d48b46]/50 text-[#f5be7e]'
+                  }`}
+                >
+                  {updateStatusText}
+                </div>
+              )}
+            </div>
+
             <button
               onClick={() => setIsAboutOpen(true)}
               className={`p-2 rounded-xl transition-colors border cursor-pointer ${
@@ -255,7 +317,23 @@ export const Header: React.FC<HeaderProps> = ({
                 </div>
               </div>
 
-              <div className="mt-5 pt-4 border-t border-[#233a29] flex items-center justify-between text-xs text-[#71927c]">
+              <div className="mt-4 pt-3 border-t border-[#233a29] flex flex-col gap-2">
+                <button
+                  type="button"
+                  onClick={handleCheckUpdate}
+                  disabled={isCheckingUpdate}
+                  className={`w-full py-2.5 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer border ${
+                    isTea
+                      ? 'bg-[#14291b] hover:bg-[#1a3824] text-emerald-300 border-emerald-500/40'
+                      : 'bg-[#251710] hover:bg-[#321f15] text-[#f5be7e] border-[#d48b46]/40'
+                  }`}
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${isCheckingUpdate ? 'animate-spin' : ''}`} />
+                  <span>{isCheckingUpdate ? 'Проверка обновлений...' : 'Проверить и обновить PWA'}</span>
+                </button>
+              </div>
+
+              <div className="mt-3 pt-3 border-t border-[#233a29] flex items-center justify-between text-xs text-[#71927c]">
                 <span className="flex items-center gap-1.5">
                   Crafted with <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" /> by CyberOwl
                 </span>
