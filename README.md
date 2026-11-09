@@ -15,7 +15,7 @@
 
   <br />
 
-  ### 🌐 [Открыть приложение в браузере (Live Demo)](https://leonid-perkin.github.io/coffeecraft/)
+  ### 🌐 [Открыть приложение в браузере](https://leonid-perkin.github.io/coffeecraft/)
 
 </div>
 
